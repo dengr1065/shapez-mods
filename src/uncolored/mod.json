@@ -1,0 +1,7 @@
+{
+    "entry": "./uncolored.js",
+    "name": "EcoUncolored",
+    "description": "Makes uncolored color items spawn on the map.",
+    "version": "Uncolored",
+    "id": "dengr1065:uncolored"
+}
