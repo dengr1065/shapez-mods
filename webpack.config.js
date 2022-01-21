@@ -40,7 +40,12 @@ if (fs.existsSync("./types.d.ts")) {
         .map((m) => m.slice(0, m.indexOf('"')))
         .join("|");
 
-    const regex = new RegExp(`import {(.*?)} from "(${modules})";`, "gm");
+    // This regex is still incomplete. I will try to improve it
+    // next time it fails.
+    const regex = new RegExp(
+        `import\\s{([\\w\\d\\s,]*?)}\\sfrom\\s"(${modules})";`,
+        "gms"
+    );
     config.module.rules.push({
         test: /\.js$/,
         loader: "string-replace-loader",

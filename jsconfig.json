@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "target": "ES2019",
-        "module": "commonjs",
+        "module": "ES6",
+        "moduleResolution": "node",
         "rootDir": "./src",
         "outDir": "./build",
         "esModuleInterop": true,
@@ -9,5 +10,5 @@
         "skipLibCheck": true,
         "resolveJsonModule": true
     },
-    "exclude": ["./build/*.mod.js", "./*.js"]
+    "exclude": ["./node_modules", "./build/*.mod.js", "./*.js"]
 }

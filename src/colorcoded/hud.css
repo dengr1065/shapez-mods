@@ -1,0 +1,29 @@
+#ingame_HUD_ColorSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 200;
+    transform: translate(100%, -50%);
+    transition: transform 0.3s ease-in;
+
+    background: #0006;
+    backdrop-filter: blur(calc(10px * var(--ui-scale)));
+    border-top-left-radius: calc(10px * var(--ui-scale));
+    border-bottom-left-radius: calc(10px * var(--ui-scale));
+    box-shadow: 0 0 0.8em #0004;
+
+    padding: calc(10px * var(--ui-scale));
+}
+
+#ingame_HUD_ColorSelector.visible {
+    transform: translate(0, -50%);
+}
+
+#ingame_HUD_ColorSelector canvas {
+    width: calc(32px * var(--ui-scale));
+    height: calc(32px * var(--ui-scale));
+}
