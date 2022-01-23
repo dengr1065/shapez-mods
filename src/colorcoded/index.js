@@ -1,14 +1,19 @@
 import { Mod } from "mods/mod";
-import * as systemPatches from "./system_patches";
 import { StaticMapEntitySystem } from "game/systems/static_map_entity";
-import { ColorCodedComponent, COLOR_FILTERS } from "./component";
+import { BeltSystem } from "game/systems/belt";
+import { BeltUnderlaysSystem } from "game/systems/belt_underlays";
+import { ColorCodedComponent } from "./component";
 import { COLOR_ITEM_SINGLETONS } from "game/items/color_item";
 import { gMetaBuildingRegistry } from "core/global_registries";
-import { round2Digits } from "core/utils";
 import { HUDColorSelector } from "./hud";
 import { resources } from "./themes";
 import { THEMES } from "game/theme";
-import { enumColors } from "game/colors";
+import { COLOR_FILTERS, getColorFilter } from "./filters";
+
+import * as systemPatches from "./system_patches";
+import * as beltPatches from "./belts/belt_patches";
+import * as beltUnderlaysPatches from "./belts/belt_underlays_patches";
+
 import { MainMenuState } from "states/main_menu";
 
 import css from "./hud.css";
@@ -16,71 +21,22 @@ import info from "./mod.json";
 
 import { DISCLAIMER } from "./cringe";
 
-// https://stackoverflow.com/a/2348659
-function hexToHue(hex) {
-    const int = parseInt(hex.slice(1), 16);
-    const r = (int >> 16) / 255;
-    const g = ((int >> 8) & 0xff) / 255;
-    const b = (int & 0xff) / 255;
-
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-
-    if (max == min) {
-        return null;
-    }
-
-    let h = -1;
-    const d = max - min;
-    switch (max) {
-        case r:
-            h = (g - b) / d + (g < b ? 6 : 0);
-            break;
-        case g:
-            h = (b - r) / d + 2;
-            break;
-        case b:
-            h = (r - g) / d + 4;
-            break;
-    }
-    h /= 6;
-
-    return Math.floor(h * 360);
-}
-
-/**
- * @param {import("game/items/color_item").ColorItem} item
- */
-function getColorFilter(item) {
-    if (item.color == enumColors.white) {
-        return "grayscale(1) brightness(1.4)";
-    }
-
-    const hex = item.getBackgroundColorAsResource();
-    if (!hex) {
-        // color is not available in our theme
-        return "grayscale(1)";
-    }
-
-    const hue = hexToHue(hex);
-    if (hue == null) {
-        return "grayscale(1)";
-    }
-
-    return `contrast(1.8) hue-rotate(${round2Digits(hue - 38)}deg)`;
-}
+const systemsToPatch = [
+    { cls: StaticMapEntitySystem, patches: systemPatches },
+    { cls: BeltSystem, patches: beltPatches },
+    { cls: BeltUnderlaysSystem, patches: beltUnderlaysPatches }
+];
 
 class ColorCoded extends Mod {
     init() {
         this.modInterface.registerComponent(ColorCodedComponent);
+        this.component = ColorCodedComponent;
 
-        // patch static map entity game system
-        for (const method in systemPatches) {
-            this.modInterface.replaceMethod(
-                StaticMapEntitySystem,
-                method,
-                systemPatches[method]
-            );
+        // patch game systems
+        for (const { cls, patches } of systemsToPatch) {
+            for (const method in patches) {
+                this.modInterface.replaceMethod(cls, method, patches[method]);
+            }
         }
 
         // once the game is initialized, all modded colors should be present

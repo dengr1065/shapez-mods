@@ -2,7 +2,7 @@
     "entry": "./index.js",
     "name": "ColorCoded",
     "description": "Allows you to enhance design of your factories by color coding.",
-    "version": "0.2.0b",
+    "version": "0.2.1b",
     "id": "dengr1065:colorcoded",
     "minimumGameVersion": ">=1.5.0",
     "settings": {
