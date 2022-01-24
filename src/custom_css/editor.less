@@ -1,0 +1,33 @@
+#ingame_HUD_CustomCSSEditor {
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 700;
+    pointer-events: all;
+
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background: #222e;
+    padding: 0.5em;
+    gap: 0.5em;
+
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 35vh;
+
+    .cm-editor {
+        background: #eee;
+        font-size: calc(11px * var(--ui-scale));
+        overflow: auto;
+
+        * {
+            pointer-events: all;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        gap: 0.5em;
+        justify-content: end;
+    }
+}

@@ -9,11 +9,14 @@
         "watch": "webpack --node-env development --watch"
     },
     "devDependencies": {
-        "css-loader": "^6.5.1",
         "eslint": "^8.6.0",
         "string-replace-loader": "^3.1.0",
-        "to-string-loader": "^1.2.0",
         "webpack": "^5.66.0",
         "webpack-cli": "^4.9.1"
+    },
+    "dependencies": {
+        "@codemirror/basic-setup": "^0.19.1",
+        "@codemirror/legacy-modes": "^0.19.0",
+        "less": "^4.1.2"
     }
 }

@@ -12,7 +12,7 @@ const config = {
     },
     module: {
         rules: [
-            { test: /\.css$/, use: ["to-string-loader", "css-loader"] },
+            { test: /\.(le|c)ss$/, type: "asset/source" },
             { test: /\.(png|svg)$/, type: "asset/inline" }
         ]
     },
