@@ -4,6 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const modAuthor = require("./package.json").author;
 
+const cssLoaders = ["to-string-loader", "css-loader"];
+
 const config = {
     entry: {},
     output: {
@@ -12,7 +14,8 @@ const config = {
     },
     module: {
         rules: [
-            { test: /\.(le|c)ss$/, type: "asset/source" },
+            { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
+            { test: /\.css$/, use: cssLoaders },
             { test: /\.(png|svg)$/, type: "asset/inline" }
         ]
     },
