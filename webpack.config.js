@@ -24,6 +24,7 @@ const config = {
             registerMod: `((cls, info) => {
                 info.author = ${JSON.stringify(modAuthor)};
                 delete info["entry"];
+                if (!("website" in info)) info.website = "";
                 window.$shapez_registerMod(cls, info);
             })`
         })

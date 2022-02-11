@@ -1,0 +1,7 @@
+{
+    "entry": "./index.js",
+    "name": "360° Rotator",
+    "description": "This rotator is a very useful building for late game, where using two 180° rotators takes too much space.",
+    "version": "0.1.0",
+    "id": "dengr1065:turn_rotator"
+}
