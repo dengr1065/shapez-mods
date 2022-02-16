@@ -4,5 +4,6 @@
     "description": "Extends the limit of zooming out without turning on map view.",
     "version": "0.1.0",
     "id": "dengr1065:map_observer",
-    "minimumGameVersion": ">=1.5.0"
+    "minimumGameVersion": ">=1.5.0",
+    "doesNotAffectSavegame": true
 }

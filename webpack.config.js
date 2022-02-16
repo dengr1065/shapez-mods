@@ -16,13 +16,15 @@ const config = {
         rules: [
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
-            { test: /\.(png|svg)$/, type: "asset/inline" }
+            { test: /\.(png|svg|woff2)$/, type: "asset/inline" }
         ]
     },
     plugins: [
         new DefinePlugin({
             registerMod: `((cls, info) => {
-                info.author = ${JSON.stringify(modAuthor)};
+                info.author = ${JSON.stringify(
+                    modAuthor.replaceAll("<", "&lt;")
+                )};
                 delete info["entry"];
                 if (!("website" in info)) info.website = "";
                 window.$shapez_registerMod(cls, info);

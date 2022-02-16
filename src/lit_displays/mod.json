@@ -3,5 +3,6 @@
     "name": "Lit Displays",
     "description": "What if you could see lit displays on the map view? Well, now you can!",
     "version": "0.1.0",
-    "id": "dengr1065:lit_displays"
+    "id": "dengr1065:lit_displays",
+    "doesNotAffectSavegame": true
 }

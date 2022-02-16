@@ -1,0 +1,40 @@
+@font-face {
+    font-family: "Share Tech Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./monospace.woff2") format("woff2");
+    font-display: block;
+}
+
+@font-face {
+    font-family: "Share Tech";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./sans-serif.woff2") format("woff2");
+    font-display: block;
+}
+
+#ingame_HUD_AreaInfo {
+    font-family: "Share Tech Mono";
+    font-size: 85%;
+    color: #fff;
+    background: #242e58b0;
+    border-radius: calc(4px * var(--ui-scale));
+
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 340;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 0.8em 1.5em;
+
+    .label {
+        font-family: "Share Tech";
+        color: #fff9;
+        padding-right: 1em;
+        min-width: 2em;
+    }
+}

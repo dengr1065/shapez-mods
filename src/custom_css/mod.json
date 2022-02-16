@@ -5,6 +5,7 @@
     "version": "0.1.0",
     "id": "dengr1065:custom_css",
     "minimumGameVersion": ">=1.5.0",
+    "doesNotAffectSavegame": true,
     "settings": {
         "code": "",
         "css": ""
