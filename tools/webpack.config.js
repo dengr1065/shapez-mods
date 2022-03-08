@@ -2,21 +2,22 @@
 const { DefinePlugin } = require("webpack");
 const fs = require("fs");
 const path = require("path");
-const modAuthor = require("./package.json").author;
+const modAuthor = require("../package.json").author;
 
 const cssLoaders = ["to-string-loader", "css-loader"];
+const buildDir = process.env.NODE_ENV == "production" ? "prod" : ".";
 
 const config = {
     entry: {},
     output: {
-        path: path.resolve("./build/"),
+        path: path.resolve("./build/", buildDir),
         filename: "[name].mod.js"
     },
     module: {
         rules: [
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
-            { test: /\.(png|svg|woff2)$/, type: "asset/inline" }
+            { test: /\.(png|jpg|svg|woff2)$/, type: "asset/inline" }
         ]
     },
     plugins: [
@@ -25,7 +26,6 @@ const config = {
                 info.author = ${JSON.stringify(
                     modAuthor.replaceAll("<", "&lt;")
                 )};
-                delete info["entry"];
                 if (!("website" in info)) info.website = "";
                 window.$shapez_registerMod(cls, info);
             })`
@@ -73,4 +73,5 @@ function generateEntries(mods) {
         config.entry[dir] = path.resolve("./src", dir, entry);
     }
 }
+
 module.exports = config;

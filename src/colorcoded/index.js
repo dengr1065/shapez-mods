@@ -5,10 +5,11 @@ import { BeltUnderlaysSystem } from "game/systems/belt_underlays";
 import { ColorCodedComponent } from "./component";
 import { COLOR_ITEM_SINGLETONS } from "game/items/color_item";
 import { gMetaBuildingRegistry } from "core/global_registries";
-import { HUDColorSelector } from "./hud";
+import { HUDColorSelector, SIGNAL_NAME } from "./hud";
 import { resources } from "./themes";
 import { THEMES } from "game/theme";
 import { COLOR_FILTERS, getColorFilter } from "./filters";
+import { Signal } from "core/signal";
 
 import * as systemPatches from "./system_patches";
 import * as beltPatches from "./belts/belt_patches";
@@ -31,6 +32,7 @@ class ColorCoded extends Mod {
     init() {
         this.modInterface.registerComponent(ColorCodedComponent);
         this.component = ColorCodedComponent;
+        this.signalName = SIGNAL_NAME;
 
         // patch game systems
         for (const { cls, patches } of systemsToPatch) {
@@ -113,6 +115,9 @@ class ColorCoded extends Mod {
         part.createElements(document.body);
         part.initialize();
         this.signals.hudElementFinalized.dispatch(part);
+
+        // also register signal dispatched by the hud
+        this.signals[SIGNAL_NAME] = new Signal();
     }
 }
 
