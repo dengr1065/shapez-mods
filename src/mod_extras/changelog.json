@@ -1,4 +1,10 @@
 {
+    "0.1.2-beta2": [
+        "Helper attribute to display images based on current theme in \"About this mod\"",
+        "Fixed header alignment in \"About this mod\" tables",
+        "Use custom storage system to fix changelog issues",
+        "Fixed incorrect handling of changelogs for new mods"
+    ],
     "0.1.2-beta1": [
         "Changelog support",
         "Mention whether mods affect savegames",

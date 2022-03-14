@@ -1,3 +1,14 @@
+.headers(@rules) {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @rules();
+    }
+}
+
 #state_MOD_ID_ModListState .modInfo {
     display: flex;
     flex-direction: column;
@@ -178,17 +189,25 @@
             margin-bottom: 0.4em;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        .headers({
             display: flex;
             align-items: center;
             gap: 0.2em;
-
             margin: 0.35em 0;
+        });
+
+        td[align="center"],
+        th[align="center"] {
+            .headers({
+                justify-content: center;
+            });
+        }
+
+        td[align="right"],
+        th[align="right"] {
+            .headers({
+                justify-content: right;
+            });
         }
 
         p {
@@ -207,6 +226,14 @@
                 margin-inline-end: 0.2em;
                 font-weight: 700;
             }
+        }
+
+        img[data-mod-extras-theme="dark"] {
+            display: none;
+        }
+
+        table {
+            width: 100%;
         }
     }
 }

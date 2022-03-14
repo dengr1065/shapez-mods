@@ -116,7 +116,7 @@ export function getChangelog(mod, lastVersion = undefined) {
         const isNew = lastVersion && semver.gt(version, lastVersion);
         result.push({
             version,
-            new: isNew,
+            new: Boolean(isNew),
             changes: changes.filter((change) => typeof change === "string")
         });
     }

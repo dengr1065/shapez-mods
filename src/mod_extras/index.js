@@ -11,6 +11,8 @@ import { modRequire } from "./mod_require";
 import authors from "../authors.json";
 import api from "./api";
 import changelog from "./changelog.json";
+import { StorageImplElectron } from "platform/electron/storage";
+import { defaultSettings, readSettings, saveSettings } from "./settings";
 
 ModInterface.prototype["require"] = modRequire;
 
@@ -18,7 +20,16 @@ class ModExtras extends Mod {
     constructor(properties) {
         super(properties);
 
+        this.storage = new StorageImplElectron(this.app);
+        this.settings = defaultSettings;
         this.api = api;
+
+        // Not sure what else I can do here
+        readSettings(this.storage).then((result) => {
+            this.settings = result;
+        });
+
+        this.saveSettings = () => saveSettings(this.storage, this.settings);
     }
 
     init() {
@@ -54,10 +65,6 @@ info.id = MOD_ID;
 info.extra.icon = icon;
 info.extra.authors.push(authors.dengr1065);
 info.extra.changelog = changelog;
-info.settings = {
-    showLibraryMods: false,
-    lastViewedChangelogs: {}
-};
 
 // eslint-disable-next-line no-undef
 registerMod(ModExtras, info);
