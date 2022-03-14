@@ -17,7 +17,8 @@ const config = {
         rules: [
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
-            { test: /\.(png|jpg|svg|woff2)$/, type: "asset/inline" }
+            { test: /\.(png|jpg|svg|woff2)$/, type: "asset/inline" },
+            { test: /\.md$/, use: ["html-loader", "markdown-loader"] }
         ]
     },
     plugins: [
