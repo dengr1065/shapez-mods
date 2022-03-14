@@ -1,0 +1,132 @@
+@import "./state_info.less";
+
+#state_MOD_ID_ModListState {
+    .headerBar {
+        justify-content: space-between;
+
+        .buttons {
+            display: flex;
+            gap: 0.8em;
+        }
+
+        .reload {
+            background: #22b42e;
+        }
+
+        .openDir {
+            background: #c746e0;
+        }
+    }
+
+    .content.mainContent {
+        display: grid;
+        grid-template-columns: minmax(8em, 3fr) 7fr;
+        grid-template-rows: 1fr auto;
+
+        background: unset;
+        padding: 0;
+        gap: calc(10px * var(--ui-scale));
+
+        > .modList,
+        > .modInfo {
+            background: #fff;
+            border-radius: 0.2em;
+        }
+
+        > .actions {
+            display: flex;
+            flex-direction: column;
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+            gap: 0.5em;
+        }
+
+        > .modInfo {
+            grid-column: 2 / 3;
+            grid-row: 1 / 3;
+        }
+    }
+
+    .modList {
+        display: flex;
+        flex-direction: column;
+        pointer-events: all;
+        overflow-y: auto;
+        padding: 0.5em;
+        gap: $padding;
+
+        &.emptyList {
+            display: grid;
+            place-items: center;
+        }
+
+        .noMods {
+            opacity: 0;
+            animation: MOD_ID_fadeIn 0.2s ease-out forwards;
+        }
+    }
+
+    .modList > .mod {
+        display: flex;
+        flex-direction: column;
+        pointer-events: all;
+        cursor: pointer;
+        padding: 0.4em;
+        gap: 0.2em;
+
+        background-color: #ececed;
+        background-position: 0.4em 0.5em;
+        background-size: 2em 2em;
+        background-repeat: no-repeat;
+        border-radius: 0.2em;
+        transition: background-color 0.1s;
+        transform: none !important;
+
+        &.missingDeps {
+            background-color: #ffcece;
+        }
+
+        &.invalid {
+            background-color: #ffdbb1;
+        }
+
+        &.selected {
+            background-color: #d1e3eb;
+        }
+
+        > .basicInfo {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 2em;
+            padding-left: 2.4em;
+
+            > div {
+                .singleLine();
+            }
+        }
+    }
+
+    .mod {
+        line-height: normal;
+
+        &.library .name {
+            padding-left: 1em;
+            background-image: url("../assets/library.svg");
+            background-position: 0 calc(50% + 0.055em);
+            background-size: 0.8em 0.8em;
+            background-repeat: no-repeat;
+        }
+
+        .textOf(name, 90%);
+        .textOf(authors, 70%, 0.6);
+        .textOf(description, 80%, 0.8);
+        .textOf(version, 65%, 0.5);
+    }
+
+    input {
+        border: none;
+        border-radius: calc(2px * var(--ui-scale));
+        padding: 0.2em 0.4em;
+    }
+}

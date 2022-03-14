@@ -1,0 +1,38 @@
+@import "./state.less";
+@import "./state_dark.less";
+@import "./changelog.less";
+
+.styledButton.MOD_ID_toggle {
+    background: #bd4242;
+
+    &.MOD_ID_on {
+        background: #469446;
+    }
+}
+
+@keyframes MOD_ID_fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.singleLine() {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.text(@size, @opacity: 1) {
+    font-size: @size;
+    opacity: @opacity;
+}
+
+.textOf(@selector, @size, @opacity: 1) {
+    & .@{selector} {
+        .text(@size, @opacity);
+    }
+}

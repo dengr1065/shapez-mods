@@ -1,0 +1,12 @@
+{
+    "entry": "./index.js",
+    "name": "Mod Extras",
+    "description": "Improves mod list and allows mod authors to show more information.",
+    "version": "0.1.2-beta1",
+    "doesNotAffectSavegame": true,
+    "extra": {
+        "library": true,
+        "authors": [],
+        "source": "https://github.com/dengr1065/shapez.io-mods/"
+    }
+}

@@ -1,0 +1,39 @@
+html[data-theme="dark"] #state_MOD_ID_ModListState {
+    .content.mainContent {
+        > .modList,
+        > .modInfo {
+            background: #484c58;
+        }
+    }
+
+    .modList > .mod {
+        background-color: #4e5360;
+
+        &.missingDeps {
+            background-color: #854343;
+        }
+
+        &.invalid {
+            background-color: #695447;
+        }
+
+        &.selected {
+            background-color: #4a6570;
+        }
+    }
+
+    .mod {
+        &.library .name {
+            background-image: url("../assets/library_dark.svg");
+        }
+    }
+
+    input {
+        background: #3c4046;
+        color: #fff;
+    }
+
+    .modInfo.noModSelected > div {
+        background-image: url("../assets/mods_dark.svg");
+    }
+}

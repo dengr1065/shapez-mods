@@ -1,0 +1,242 @@
+#state_MOD_ID_ModListState .modInfo {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    pointer-events: all;
+    padding: 1em;
+
+    &.noModSelected {
+        display: grid;
+        place-items: center;
+
+        > div {
+            max-width: 20em;
+            text-align: center;
+            opacity: 0.75;
+
+            padding-top: 4.5em;
+            background-image: url("../assets/mods.svg");
+            background-position: center 0;
+            background-size: 4em 4em;
+            background-repeat: no-repeat;
+        }
+    }
+
+    > .infoContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        animation: MOD_ID_fadeIn 0.3s ease-out forwards;
+
+        .title {
+            font-weight: 700;
+        }
+
+        .link {
+            pointer-events: all;
+            text-decoration: underline;
+            transform: none !important;
+            cursor: pointer;
+        }
+    }
+
+    .basicInfo {
+        display: grid;
+        line-height: normal;
+        grid-template-columns: auto 1fr auto;
+        gap: 0 1em;
+
+        > :first-child {
+            display: flex;
+            flex-direction: column;
+            grid-column: 1 / 2;
+        }
+
+        .name {
+            .singleLine();
+            font-size: 140%;
+
+            &::after {
+                content: "(" attr(data-modid) ")";
+                margin-inline-start: 0.5em;
+                opacity: 0.7;
+                font-size: 70%;
+            }
+        }
+
+        .authors {
+            .singleLine();
+            .text(85%, 0.8);
+        }
+
+        .actions {
+            margin-top: 0.6em;
+            display: flex;
+            gap: 0.5em;
+        }
+
+        .affectsSavegame {
+            font-style: italic;
+            font-size: 90%;
+            opacity: 0.8;
+            margin-top: 0.2em;
+        }
+
+        .icon {
+            width: 6em;
+            height: $width;
+            border-radius: 0.4em;
+            grid-column: 3/4;
+            grid-row: 1 / 4;
+
+            background-size: 100%;
+        }
+    }
+
+    .advancedInfo {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto 1fr;
+
+        &.double {
+            gap: 0 1em;
+
+            .dependencies {
+                border-left: 1px solid #0002;
+                padding-left: 1em;
+            }
+        }
+
+        .screenshots {
+            display: flex;
+            overflow-x: auto;
+            pointer-events: all;
+            gap: 0.6em;
+            padding: 0.3em 0;
+            grid-row: 2 / 3;
+
+            img {
+                pointer-events: all;
+                cursor: pointer;
+
+                border-radius: 0.5em;
+                opacity: 0;
+                height: 8em;
+                transition: opacity 0.3s ease-out;
+
+                &.loaded {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .dependencies {
+            display: flex;
+            flex-direction: column;
+            grid-row: 1 / 3;
+            gap: 0.1em;
+
+            .textOf(hint, 90%, 0.8);
+
+            .name,
+            .version,
+            .error {
+                font-size: 90%;
+                line-height: normal;
+                margin: 0.2em;
+            }
+
+            .name::before {
+                content: "\2022";
+                margin-inline-end: 0.2em;
+            }
+
+            .name::after {
+                content: ":";
+            }
+
+            .version {
+                opacity: 0.7;
+            }
+
+            .error {
+                font-weight: 700;
+                color: #f22;
+            }
+        }
+    }
+
+    .modReadme {
+        * {
+            pointer-events: all;
+            line-height: unset;
+        }
+
+        .title {
+            border-bottom: 1px solid #0002;
+            padding-bottom: 0.4em;
+            margin-bottom: 0.4em;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            display: flex;
+            align-items: center;
+            gap: 0.2em;
+
+            margin: 0.35em 0;
+        }
+
+        p {
+            margin: 0.2em 0;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        ul {
+            list-style-type: none;
+
+            li::before {
+                content: "\2022";
+                margin-inline-end: 0.2em;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+#MOD_ID_authors {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+
+    .author {
+        display: grid;
+        grid-template-columns: auto 1fr;
+
+        .icon {
+            width: 2.5em;
+            height: $width;
+            margin-right: 0.5em;
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
+            border-radius: 0.3em;
+
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .website {
+            &:extend(#state_MOD_ID_ModListState
+                .modInfo
+                > .infoContainer
+                .link);
+        }
+    }
+}

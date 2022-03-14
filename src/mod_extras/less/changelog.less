@@ -1,0 +1,35 @@
+.MOD_ID_changelog {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5em 0;
+    padding: 0.5em;
+    min-height: 10em;
+    max-height: 70vh;
+
+    .entry {
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 0.2em;
+        padding: 0.4em 0.6em;
+
+        &.new {
+            background: #00ff2030;
+        }
+    }
+
+    .version {
+        font-weight: 700;
+        padding-bottom: 0.1em;
+    }
+
+    .empty {
+        font-style: italic;
+        .text(100%, 0.8);
+    }
+
+    .change::before {
+        content: "\2022";
+        font-weight: 700;
+        margin-inline-end: 0.4em;
+    }
+}
