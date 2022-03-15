@@ -1,4 +1,9 @@
 {
+    "0.1.2-rc1": [
+        "Initial version of \"About this mod\" for Mod Extras",
+        "Internal metadata refactor",
+        "Focus filter input field when opening mod list"
+    ],
     "0.1.2-beta2": [
         "Helper attribute to display images based on current theme in \"About this mod\"",
         "Fixed header alignment in \"About this mod\" tables",

@@ -405,6 +405,7 @@ export class ModListState extends TextualGameState {
         this.searchField.placeholder = T.filterModsHint;
         this.searchField.addEventListener("input", () => this.renderList());
         this.actions.appendChild(this.searchField);
+        this.searchField.focus();
 
         const showLibraries = makeToggleButton(
             this.actions,
