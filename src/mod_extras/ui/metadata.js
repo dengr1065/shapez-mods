@@ -1,6 +1,6 @@
 import info from "../mod.json";
 import { MOD_ID } from "../constants";
-import icon from "../assets/icon.png";
+import icon from "../assets/icon.webp";
 import authors from "../../authors.json";
 import changelog from "../changelog.json";
 import readmeSource from "../README.md";

@@ -15,8 +15,8 @@ import {
     getChangelog
 } from "./mod_helpers";
 import { makeToggleButton } from "./ui/toggle_button";
-import defaultIcon from "./assets/default_icon.png";
-import authorIcon from "./assets/author.png";
+import defaultIcon from "./assets/default_icon.webp";
+import authorIcon from "./assets/author.webp";
 import { nwLink } from "./website_fix";
 import { Dialog } from "core/modal_dialog_elements";
 import { showChangelogDialog } from "./ui/changelog";

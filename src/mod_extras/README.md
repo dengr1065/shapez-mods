@@ -1,7 +1,7 @@
-| ![API / Validation / Dependencies / Changelogs / Search](./assets/function_bar.png) |
-| :---------------------------------------------------------------------------------: |
-|                                  <h2>{{name}}</h2>                                  |
-|                                   {{description}}                                   |
+| ![API / Validation / Dependencies / Changelogs / Search](./assets/function_bar.webp) |
+| :----------------------------------------------------------------------------------: |
+|                                  <h2>{{name}}</h2>                                   |
+|                                   {{description}}                                    |
 
 <hr>
 
