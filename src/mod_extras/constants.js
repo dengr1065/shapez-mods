@@ -16,8 +16,6 @@ export const T = {
     },
     reloadMods: "Soft Restart",
     openModsFolder: "Mods Folder",
-    // Mod List
-    emptyModList: "There are no mods.",
     // Actions
     filterModsHint: "Filter mods\u2026",
     showLibraryMods: "Show Library Mods",
@@ -32,6 +30,7 @@ export const T = {
     noExtraInfo: "This mod does not provide additional information.",
     authorsTitle: "Mod authors",
     viewWebsite: "View website",
+    openModSettings: "Settings",
     viewSourceCode: "Source Code",
     screenshots: "Screenshots",
     dependencies: {

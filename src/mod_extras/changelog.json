@@ -1,4 +1,10 @@
 {
+    "0.2.0": [
+        "Initial support for mod settings",
+        "\"Filtered List\" re-usable component",
+        "Switched to filtered list component for mod list",
+        "Fixed mod.io link opening incorrectly"
+    ],
     "0.1.2": ["Optimized assets to reduce bundle size"],
     "0.1.2-rc1": [
         "Initial version of \"About this mod\" for Mod Extras",

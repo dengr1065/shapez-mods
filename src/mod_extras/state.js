@@ -20,43 +20,10 @@ import authorIcon from "./assets/author.webp";
 import { nwLink } from "./website_fix";
 import { Dialog } from "core/modal_dialog_elements";
 import { showChangelogDialog } from "./ui/changelog";
+import { FilteredList } from "./ui/filtered_list";
 
 export const MOD_LIST_STATE = (MOD_ID + ":ModListState").replaceAll(":", "_");
 const MOD_AUTHORS_ID = (MOD_ID + ":authors").replaceAll(":", "_");
-
-/**
- * @param {import("mods/mod").Mod[]} mods
- * @param {string} filter
- * @param {boolean} showLibs
- */
-function filterMods(mods, filter, showLibs) {
-    // toUpperCase is usually better for search, because it
-    // allows to search for some letters without typing them
-    filter = filter.toUpperCase();
-    const words = filter.split(/\s+/);
-
-    return mods.filter((mod) => {
-        if (!showLibs && mod.metadata.extra?.library) {
-            return false;
-        }
-
-        let name = mod.metadata.name.toUpperCase();
-        if (mod.metadata.description) {
-            // dirty, but it works for filtering
-            name += mod.metadata.description.toUpperCase();
-        }
-
-        if (words.every((word) => name.includes(word))) {
-            return true;
-        }
-
-        if (mod.metadata.id.toUpperCase().includes(filter)) {
-            return true;
-        }
-
-        return false;
-    });
-}
 
 /**
  * @param {import("platform/wrapper").PlatformWrapperInterface} wrapper
@@ -98,19 +65,6 @@ export class ModListState extends TextualGameState {
         element.classList.toggle("invalid", !isValidVersion(mod));
         element.classList.toggle("missingDeps", hasMissingDeps(mod));
 
-        this.trackClicks(element, () => {
-            if (this.selectedElement == element) {
-                return;
-            }
-
-            this.selectedElement?.classList.remove("selected");
-            this.selectedElement = element;
-            element.classList.add("selected");
-
-            this.selectedMod = mod;
-            this.renderInfo();
-        });
-
         const basicInfo = makeDiv(element, undefined, ["basicInfo"]);
         makeDiv(basicInfo, undefined, ["name"]).innerText = mod.metadata.name;
         makeDiv(basicInfo, undefined, ["authors"]).innerText =
@@ -124,39 +78,38 @@ export class ModListState extends TextualGameState {
         return element;
     }
 
-    renderList() {
-        const mods = filterMods(
-            this.allMods,
-            this.searchField.value,
-            this.mod.settings.showLibraryMods
-        );
+    /**
+     * @param {import("mods/mod").Mod[]} mods
+     * @param {string} filter
+     */
+    filterMods(mods, filter) {
+        // toUpperCase is usually better for search, because it
+        // allows to search for some letters without typing them
+        filter = filter.toUpperCase();
+        const words = filter.split(/\s+/);
 
-        if (
-            this.lastModList !== null &&
-            mods.length == this.lastModList.length &&
-            mods.every((mod, i) => mod == this.lastModList[i])
-        ) {
-            // Don't re-render if list hasn't changed
-            return;
-        }
+        const showLibs = this.mod.settings.showLibraryMods;
+        return mods.filter((mod) => {
+            if (!showLibs && mod.metadata.extra?.library) {
+                return false;
+            }
 
-        this.lastModList = mods;
-        while (this.modList.firstChild) {
-            // god i love removing children
-            this.modList.firstChild.remove();
-        }
+            let name = mod.metadata.name.toUpperCase();
+            if (mod.metadata.description) {
+                // dirty, but it works for filtering
+                name += mod.metadata.description.toUpperCase();
+            }
 
-        // Handle empty mod list
-        this.modList.classList.toggle("emptyList", mods.length == 0);
-        if (mods.length == 0) {
-            const noMods = makeDiv(this.modList, undefined, ["noMods"]);
-            noMods.innerText = T.emptyModList;
-            return;
-        }
+            if (words.every((word) => name.includes(word))) {
+                return true;
+            }
 
-        for (const mod of mods) {
-            this.modList.appendChild(this.allElements[mod.metadata.id]);
-        }
+            if (mod.metadata.id.toUpperCase().includes(filter)) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     showAuthors(mod) {
@@ -256,7 +209,7 @@ export class ModListState extends TextualGameState {
     }
 
     renderInfoContainer() {
-        const mod = this.selectedMod;
+        const mod = this.modList.selectedItem;
         const element = makeDivElement(undefined, ["infoContainer"]);
 
         const meta = mod.metadata;
@@ -306,6 +259,14 @@ export class ModListState extends TextualGameState {
             return element;
         }
 
+        // Settings state (if registered)
+        addActionIf(
+            extra.settingsState &&
+                this.stateManager.stateClasses[extra.settingsState],
+            T.openModSettings,
+            () => this.moveToStateAddGoBack(extra.settingsState)
+        );
+
         // Source code
         addActionIf(
             extra.source?.startsWith("https://"),
@@ -350,7 +311,7 @@ export class ModListState extends TextualGameState {
 
     renderInfo() {
         this.modInfo.firstChild?.remove();
-        const mod = this.selectedMod;
+        const mod = this.modList.selectedItem;
 
         const noModSelected = mod == undefined;
         this.modInfo.classList.toggle("noModSelected", noModSelected);
@@ -358,12 +319,18 @@ export class ModListState extends TextualGameState {
         if (noModSelected) {
             // Mod Extras is excluded, because we're going to
             // explain what it does
-            const hasMods = this.allMods.length > 1;
+            const hasMods = this.modList.list.length > 1;
             const text = hasMods
                 ? T.chooseMod
                 : T.noModsFound.replace("<mod>", this.mod.metadata.name);
 
             makeDiv(this.modInfo).innerHTML = text;
+
+            const anchor = this.modInfo.querySelector("a");
+            anchor?.addEventListener("click", (ev) => {
+                ev.preventDefault();
+                this.app.platformWrapper.openExternalLink(anchor.href);
+            });
             return;
         }
 
@@ -371,16 +338,13 @@ export class ModListState extends TextualGameState {
     }
 
     onEnter() {
-        /** @type {import("mods/mod").Mod?} */
-        this.selectedMod = undefined;
-        this.selectedElement = undefined;
-        this.allMods = getSortedMods();
-        this.allElements = {};
-        this.lastModList = null;
+        this.modList = new FilteredList(getSortedMods());
+        this.modList.container.classList.add("modList");
+        this.modList.filterInput.placeholder = T.filterModsHint;
 
-        for (const mod of this.allMods) {
-            this.allElements[mod.metadata.id] = this.renderMod(mod);
-        }
+        this.modList.filter = this.filterMods.bind(this);
+        this.modList.render = this.renderMod.bind(this);
+        this.modList.itemSelected.add(this.renderInfo, this);
 
         const headerBar = document.querySelector(".headerBar");
         const buttons = makeDiv(headerBar, undefined, ["buttons"]);
@@ -397,15 +361,12 @@ export class ModListState extends TextualGameState {
 
         // Layout base: split layout
         const content = document.querySelector(".mainContent");
-        this.modList = makeDiv(content, undefined, ["modList"]);
+        content.appendChild(this.modList.container);
         this.actions = makeDiv(content, undefined, ["actions"]);
         this.modInfo = makeDiv(content, undefined, ["modInfo"]);
 
-        this.searchField = document.createElement("input");
-        this.searchField.placeholder = T.filterModsHint;
-        this.searchField.addEventListener("input", () => this.renderList());
-        this.actions.appendChild(this.searchField);
-        this.searchField.focus();
+        this.actions.appendChild(this.modList.filterInput);
+        this.modList.filterInput.focus();
 
         const showLibraries = makeToggleButton(
             this.actions,
@@ -416,11 +377,11 @@ export class ModListState extends TextualGameState {
         this.trackClicks(showLibraries.element, () => {
             showLibraries.handler();
             this.mod.settings.showLibraryMods = showLibraries.value;
-            this.renderList();
+            this.modList.refresh();
         });
 
         // Render when entering state
-        this.renderList();
+        this.modList.refresh();
         this.renderInfo();
     }
 
