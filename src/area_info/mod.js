@@ -10,7 +10,7 @@ class AreaInfo extends Mod {
     }
 
     registerHud(/** @type {import("game/root").GameRoot} */ root) {
-        const part = new HUDAreaInfo(root);
+        const part = new HUDAreaInfo(root, this);
         root.hud.parts.areaInfo = part;
 
         this.signals.hudElementInitialized.dispatch(part);

@@ -10,20 +10,56 @@ import { ArrayTrackedState } from "./array_tracked_state";
  * @param {string} name
  */
 function makeField(parent, name) {
-    const label = makeDiv(parent, undefined, ["label"]);
+    const cls = name.toLowerCase();
+
+    const label = makeDiv(parent, undefined, ["label", cls]);
     label.innerText = name;
 
-    const value = makeDiv(parent);
+    const value = makeDiv(parent, undefined, [cls]);
     return value;
 }
 
+/**
+ * Gets compatible cost of specified blueprint
+ * @param {Blueprint} blueprint
+ */
+function getCost(blueprint) {
+    const cost = blueprint.getCost();
+    return (Array.isArray(cost) ? cost : [cost])
+        .filter((typeCost) => typeCost > 0)
+        .map(formatBigNumberFull)
+        .join(", ");
+}
+
 export class HUDAreaInfo extends BaseHUDPart {
+    constructor(root, mod) {
+        super(root);
+
+        /** @type {import("mods/mod").Mod} */
+        this.mod = mod;
+    }
+
     createElements(parent) {
         this.element = makeDiv(parent, "ingame_HUD_AreaInfo", []);
 
-        this.buildingsCount = makeField(this.element, "Buildings");
-        this.blueprintCost = makeField(this.element, "Cost");
-        this.selectionArea = makeField(this.element, "Area");
+        this.fields = {
+            buildings: makeField(this.element, "Buildings"),
+            cost: makeField(this.element, "Cost"),
+            area: makeField(this.element, "Area"),
+            density: makeField(this.element, "Density")
+        };
+
+        for (const key of this.mod.settings.fields) {
+            // Only show fields selected in settings
+            const elements = this.element.getElementsByClassName(key);
+            for (const element of elements) {
+                element.classList.add("visible");
+            }
+        }
+
+        const { background, foreground } = this.mod.settings;
+        this.element.style.backgroundColor = background;
+        this.element.style.color = foreground;
     }
 
     initialize() {
@@ -42,20 +78,28 @@ export class HUDAreaInfo extends BaseHUDPart {
             return;
         }
 
-        this.buildingsCount.innerText = uids.length;
-
         const blueprint = Blueprint.fromUids(this.root, uids);
-        this.blueprintCost.innerText = formatBigNumberFull(blueprint.getCost());
 
         // Now, try to find the area by extending rectangle
         let rectangle = new Rectangle();
+        let tiles = 0;
 
         for (const { components } of blueprint.entities) {
             const bounds = components.StaticMapEntity.getTileSpaceBounds();
+            tiles += bounds.w * bounds.h;
+
             rectangle = rectangle.getUnion(bounds);
         }
 
-        this.selectionArea.innerHTML = `${rectangle.w}&times;${rectangle.h}`;
+        const { w, h } = rectangle;
+        const area = w * h;
+
+        const usage = (tiles / area) * 100;
+
+        this.fields.buildings.innerText = `${uids.length} (${tiles})`;
+        this.fields.cost.innerText = getCost(blueprint);
+        this.fields.area.innerHTML = `${w}&times;${h} (${area})`;
+        this.fields.density.innerText = `${usage.toFixed(1)}%`;
     }
 
     update() {

@@ -2,7 +2,12 @@
     "entry": "./mod.js",
     "name": "Area Info",
     "description": "Shows more information about building selection.",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "id": "dengr1065:area_info",
-    "doesNotAffectSavegame": true
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "fields": ["buildings", "cost", "area", "density"],
+        "background": "#242e58b0",
+        "foreground": "#ffffff"
+    }
 }

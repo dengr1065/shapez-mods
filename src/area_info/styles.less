@@ -17,8 +17,6 @@
 #ingame_HUD_AreaInfo {
     font-family: "Share Tech Mono";
     font-size: 85%;
-    color: #fff;
-    background: #242e58b0;
     border-radius: calc(4px * var(--ui-scale));
 
     position: absolute;
@@ -30,6 +28,14 @@
     display: grid;
     grid-template-columns: 1fr auto;
     padding: 0.8em 1.5em;
+
+    div {
+        display: none;
+
+        &.visible {
+            display: block;
+        }
+    }
 
     .label {
         font-family: "Share Tech";
