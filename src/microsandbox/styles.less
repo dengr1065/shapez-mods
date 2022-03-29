@@ -1,0 +1,68 @@
+#ingame_HUD_MicroSandbox {
+    position: absolute;
+    padding: 0.3rem;
+    bottom: $padding * 4;
+    left: $padding * 4;
+    min-width: 16em;
+
+    display: flex;
+    flex-direction: column;
+    gap: $padding / 2;
+    z-index: 200;
+
+    background-color: #303030ef;
+    color: #ffffffe0;
+    font-size: 70%;
+    border-radius: 0.2em;
+
+    .row {
+        display: grid;
+        align-items: center;
+        padding: 0.1em;
+        gap: 0.3em;
+
+        .label {
+            margin-inline-end: 0.4em;
+        }
+
+        &.label {
+            color: #ffffffb0;
+            line-height: normal;
+        }
+
+        &.number {
+            // plus/minus one buttons
+            grid-template-columns: 1fr auto auto;
+
+            &.additional {
+                grid-template-columns: 1fr repeat(4, auto);
+            }
+        }
+
+        button {
+            display: block;
+            width: 1.2em;
+            height: $width;
+            padding: 0;
+            margin: 0;
+
+            background-position: 50%;
+            background-size: 1.3em;
+            background-repeat: no-repeat;
+
+            @icons: minus, plus, min, max;
+            each(@icons, {
+                &.@{value} {
+                    background-image: url("./assets/@{value}.svg");
+                }
+            });
+        }
+
+        &.toggle button {
+            width: 100%;
+            font-size: 110%;
+            margin-top: 0.2em;
+            height: unset;
+        }
+    }
+}

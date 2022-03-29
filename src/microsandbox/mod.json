@@ -1,0 +1,8 @@
+{
+    "entry": "./index.js",
+    "id": "dengr1065:microsandbox",
+    "name": "\u00b5Sandbox",
+    "description": "Just a little sandbox mod. Make sure to check the keybindings list.",
+    "version": "1.3.0",
+    "doesNotAffectSavegame": true
+}
