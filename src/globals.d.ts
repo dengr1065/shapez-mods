@@ -1,3 +1,12 @@
+import { Mod } from "mods/mod";
+import { ModMetadata } from "mods/modloader";
+
+declare global {
+    interface Window {
+        $shapez_registerMod(constructor: typeof Mod, metadata: ModMetadata);
+    }
+}
+
 declare interface TypedSignal<T extends any[]> {
     add(receiver: (...args: T) => "STOP_PROPAGATION" | void, scope?: object);
     addToTop(

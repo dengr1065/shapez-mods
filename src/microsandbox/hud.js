@@ -1,3 +1,4 @@
+import { Signal } from "core/signal";
 import { makeDiv } from "core/utils";
 import { BaseHUDPart } from "game/hud/base_hud_part";
 import { DynamicDomAttach } from "game/hud/dynamic_dom_attach";
@@ -25,6 +26,13 @@ const upgradeShortNames = {
 };
 
 export class HUDMicroSandbox extends BaseHUDPart {
+    constructor(root) {
+        super(root);
+
+        /** @type {TypedSignal<[number]>} */
+        this.levelChanged = new Signal();
+    }
+
     createElements(parent) {
         this.element = makeDiv(parent, "ingame_HUD_MicroSandbox");
         this.rows = [
@@ -75,10 +83,6 @@ export class HUDMicroSandbox extends BaseHUDPart {
         this.visible = !this.visible;
     }
 
-    get upgrades() {
-        return this.root.hubGoals.upgradeLevels;
-    }
-
     createUpgradeRows() {
         const rows = [
             new LabelRow(this, {
@@ -117,17 +121,27 @@ export class HUDMicroSandbox extends BaseHUDPart {
         return rows;
     }
 
+    get upgrades() {
+        return this.root.hubGoals.upgradeLevels;
+    }
+
     setLevel(value) {
         // Setting the level needs special handling
         const rewards = generateLevelDefinitions().map((goal) => goal.reward);
         const gameRewards = this.root.hubGoals.gainedRewards;
         for (let i = 1; i <= rewards.length; i++) {
             // Unset reward if level is higher, else set
-            gameRewards[rewards[i - 1]] = i >= value ? 0 : 1;
+            const reward = rewards[i - 1];
+            gameRewards[reward] = i >= value ? 0 : 1;
         }
 
         this.root.hubGoals.level = value;
+        this.levelChanged.dispatch(value);
         this.root.hubGoals.computeNextGoal();
+
+        // reset shapes for our new goal (so it doesn't get skipped)
+        const key = this.root.hubGoals.currentGoal.definition.getHash();
+        this.root.hubGoals.storedShapes[key] = 0;
 
         this.root.hud.parts.pinnedShapes?.rerenderFull();
     }

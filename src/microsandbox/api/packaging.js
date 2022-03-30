@@ -23,7 +23,11 @@ function internalPinShapeHook(sourceMethod, pin, integration) {
             handle.element.classList.contains("package")
         );
 
-        integration.shape = handle.key;
+        if (handle) {
+            integration.shape = handle.key;
+        } else {
+            integration.shape = undefined;
+        }
     }
 }
 
