@@ -32,5 +32,4 @@ class CustomCSSMod extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
 registerMod(CustomCSSMod, info);

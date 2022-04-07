@@ -3,6 +3,6 @@
     "id": "dengr1065:microsandbox",
     "name": "\u00b5Sandbox",
     "description": "Small but extensible sandbox mod, supports Packaging and Fill Storages out of the box.",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "doesNotAffectSavegame": true
 }

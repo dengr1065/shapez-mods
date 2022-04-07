@@ -2,7 +2,7 @@
     "entry": "./mod.js",
     "name": "Area Info",
     "description": "Shows more information about building selection.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "id": "dengr1065:area_info",
     "doesNotAffectSavegame": true,
     "settings": {

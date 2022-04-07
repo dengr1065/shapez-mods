@@ -20,5 +20,4 @@ class AreaInfo extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
 registerMod(AreaInfo, info);

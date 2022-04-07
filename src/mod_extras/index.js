@@ -58,5 +58,4 @@ class ModExtras extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
 registerMod(ModExtras, metadata);

@@ -1,47 +1,47 @@
 /* eslint-disable */
-const { DefinePlugin } = require("webpack");
-const fs = require("fs");
-const path = require("path");
-const modAuthor = require("../package.json").author;
+const { readFileSync } = require("fs");
+const { resolve } = require("path");
+const { BannerPlugin, DefinePlugin } = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
+const { resolveEntries, modsMetadata } = require("./entry_resolver");
+const { getBanner } = require("./mod_utils");
 
 const cssLoaders = ["to-string-loader", "css-loader"];
-const buildDir = process.env.NODE_ENV == "production" ? "prod" : ".";
+
+const isDev = process.env.NODE_ENV !== "production";
+const buildDir = isDev ? "." : "prod";
 
 const config = {
-    entry: {},
+    entry: resolveEntries(),
     output: {
-        path: path.resolve("./build/", buildDir),
+        path: resolve("./build/", buildDir),
         filename: "[name].mod.js"
     },
     module: {
         rules: [
+            { test: /mod\.json$/, use: ["./tools/extras_loader"] },
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
             { test: /\.(webp|png|svg|woff2)$/, type: "asset/inline" },
             { test: /\.md$/, use: ["html-loader", "markdown-loader"] }
         ]
     },
+    optimization: {
+        minimize: !isDev,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false
+            })
+        ]
+    },
     plugins: [
-        new DefinePlugin({
-            registerMod: `((cls, info) => {
-                info.author = ${JSON.stringify(
-                    modAuthor.replaceAll("<", "&lt;")
-                )};
-                if (!("website" in info)) info.website = "";
-                window.$shapez_registerMod(cls, info);
-            })`
-        })
+        new BannerPlugin(({ chunk }) => getBanner(modsMetadata[chunk.name])),
+        new DefinePlugin({ registerMod: "window.$shapez_registerMod" })
     ]
 };
 
-generateEntries(
-    fs
-        .readdirSync("./src")
-        .filter((dir) => fs.existsSync(path.join("./src", dir, "mod.json")))
-);
-
-if (fs.existsSync("./types.d.ts")) {
-    const types = fs.readFileSync("./types.d.ts", "utf-8");
+try {
+    const types = readFileSync("./types.d.ts", "utf-8");
     const modules = types
         .split(/declare\smodule\s"/gm)
         .map((m) => m.slice(0, m.indexOf('"')))
@@ -62,17 +62,8 @@ if (fs.existsSync("./types.d.ts")) {
         },
         exclude: /node_modules/
     });
-} else {
+} catch {
     console.warn("Failed to find types.d.ts, imports won't be mapped.");
-}
-
-function generateEntries(mods) {
-    for (const dir of mods) {
-        const jsonPath = path.resolve("./src", dir, "mod.json");
-        const { entry } = require(jsonPath);
-
-        config.entry[dir] = path.resolve("./src", dir, entry);
-    }
 }
 
 module.exports = config;

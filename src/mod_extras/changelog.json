@@ -1,4 +1,5 @@
 {
+    "0.2.1": ["Switched to new mod build system"],
     "0.2.0": [
         "Initial support for mod settings",
         "\"Filtered List\" re-usable component",

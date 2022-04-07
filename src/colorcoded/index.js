@@ -121,5 +121,4 @@ class ColorCoded extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
 registerMod(ColorCoded, info);

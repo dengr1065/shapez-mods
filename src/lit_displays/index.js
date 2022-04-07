@@ -27,5 +27,4 @@ class LitDisplays extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
 registerMod(LitDisplays, info);

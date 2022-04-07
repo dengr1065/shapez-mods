@@ -4,7 +4,7 @@ import { KEYCODES } from "game/key_action_mapper";
 import { Mod } from "mods/mod";
 import { rowClasses, setupIntegrations } from "./api";
 import { HUDMicroSandbox } from "./hud";
-import info from "./mod.json";
+import metadata from "./metadata";
 import styles from "./styles.less";
 
 /**
@@ -73,5 +73,4 @@ class MicroSandbox extends Mod {
     }
 }
 
-// eslint-disable-next-line no-undef
-registerMod(MicroSandbox, info);
+registerMod(MicroSandbox, metadata);
