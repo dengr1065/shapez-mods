@@ -27,9 +27,10 @@ function validateMod(metadata) {
 function unwrapExtras(metadata) {
     metadata.website ??= website;
     metadata.extra ??= {};
+    metadata.extra.authors ??= [];
     metadata.extra.source = source;
 
-    const authors = metadata.extra?.authors ?? [];
+    const { authors } = metadata.extra;
     if (authors.length == 0) {
         authors.push(defaultAuthor);
     }
