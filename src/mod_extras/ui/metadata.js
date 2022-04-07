@@ -1,7 +1,6 @@
 import info from "../mod.json";
 import { MOD_ID } from "../constants";
 import icon from "../assets/icon.webp";
-import authors from "../../authors.json";
 import changelog from "../changelog.json";
 import readmeSource from "../README.md";
 
@@ -45,7 +44,6 @@ function replaceFromMetadata(text) {
 
 info.id = MOD_ID;
 info.extra.icon = icon;
-info.extra.authors.push(authors.dengr1065);
 info.extra.changelog = changelog;
 info.extra.readme = replaceFromMetadata(readmeSource);
 

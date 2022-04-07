@@ -16,16 +16,18 @@ function resolveEntries() {
             continue;
         }
 
-        try {
-            const text = readFileSync(location, "utf-8");
-            const mod = validateMod(JSON.parse(text));
-            unwrapExtras(mod);
+        const text = readFileSync(location, "utf-8");
+        const mod = JSON.parse(text);
 
-            entries[modDir] = resolve("./src", modDir, mod.entry);
-            modsMetadata[modDir] = mod;
+        try {
+            validateMod(mod);
         } catch (error) {
             console.warn("%s: %s", modDir, error.message);
         }
+
+        unwrapExtras(mod);
+        entries[modDir] = resolve("./src", modDir, mod.entry);
+        modsMetadata[modDir] = mod;
     }
 
     if (!buildOnly?.length) {
