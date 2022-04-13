@@ -16,4 +16,5 @@ export function stage4aInitEmptyGame() {
 
     this.core.root.hubGoals.level = level;
     this.core.root.hubGoals.computeNextGoal();
+    this.core.root.hud.parts.pinnedShapes?.rerenderFull();
 }
