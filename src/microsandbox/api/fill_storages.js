@@ -7,12 +7,19 @@ import { StorageSystem } from "game/systems/storage";
 import { ToggleRow } from "../rows/toggle_row";
 
 /** @this {StorageSystem} */
-function updateHook() {
+function updateHook(superMethod) {
     /** @type {import("../hud").HUDMicroSandbox} */
     const hud = this.root.hud.parts.microSandbox;
 
     for (const entity of this.allEntities) {
         const { Storage, ItemEjector, WiredPins } = entity.components;
+        if (Storage.isPackager) {
+            const oldEntities = this.allEntities;
+            this.allEntities = [entity];
+            superMethod();
+            this.allEntities = oldEntities;
+            continue;
+        }
 
         eject: if (Storage.storedItem && Storage.storedCount > 0) {
             const nextSlot = ItemEjector.getFirstFreeSlot();

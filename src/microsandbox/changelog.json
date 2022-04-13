@@ -1,4 +1,5 @@
 {
+    "1.4.2": ["Fixed conflict with Packaging and Fill Storages"],
     "1.4.1": [
         "Rebuilt with new build system",
         "Mod Extras metadata is now provided"
