@@ -1,9 +1,12 @@
 {
     "entry": "./mod.js",
     "name": "Map Observer",
-    "description": "Extends the limit of zooming out without turning on map view.",
-    "version": "0.1.1",
+    "description": "Customize map background and grid colors, and extend the limit of zooming out.",
+    "version": "0.2.0",
     "id": "dengr1065:map_observer",
     "minimumGameVersion": ">=1.5.0",
-    "doesNotAffectSavegame": true
+    "doesNotAffectSavegame": true,
+    "extra": {
+        "settingsState": "MapObserverSettingsState"
+    }
 }

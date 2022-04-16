@@ -1,0 +1,78 @@
+#state_MapObserverSettingsState {
+    .mainContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .mainContent > div {
+        font-weight: bold;
+        font-size: 110%;
+    }
+
+    p {
+        opacity: 0.8;
+    }
+
+    label {
+        pointer-events: all;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        width: 30em;
+        height: 2em;
+
+        border-radius: 0.3em;
+        padding: 0 0.4em;
+        transition: 0.15s background-color linear;
+
+        &:hover {
+            background-color: #00000015;
+        }
+    }
+
+    input {
+        cursor: default;
+        all: unset;
+
+        &:hover {
+            filter: brightness(120%);
+        }
+
+        &::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        &::-webkit-color-swatch {
+            border: none;
+            border-radius: 0.2em;
+            width: 3em;
+            height: 1.5em;
+        }
+
+        &[type="checkbox"] {
+            background-color: #9b3333;
+            border-radius: 0.2em;
+            width: 1.5em;
+            height: 1.5em;
+
+            &:checked {
+                background-color: #398330;
+                position: relative;
+            }
+
+            &:checked::after {
+                content: "×";
+                text-align: center;
+                position: absolute;
+                font-size: 180%;
+                color: white;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+        }
+    }
+}
