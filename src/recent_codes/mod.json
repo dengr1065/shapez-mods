@@ -1,0 +1,11 @@
+{
+    "entry": "./index.js",
+    "name": "Recent Codes",
+    "description": "Shows recently used items in constant signal picker.",
+    "version": "1.0.0-beta",
+    "id": "dengr1065:recent_codes",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "recents": []
+    }
+}
