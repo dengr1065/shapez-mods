@@ -1,0 +1,8 @@
+{
+    "entry": "./index.js",
+    "name": "Custom Pins",
+    "description": "Pin any shape and track stored amount or throughput.",
+    "version": "1.0.0",
+    "doesNotAffectSavegame": true,
+    "id": "dengr1065:custom_pins"
+}
