@@ -1,6 +1,7 @@
 import { DialogWithForm } from "core/modal_dialog_elements";
 import { FormElementItemChooser } from "core/modal_dialog_forms";
 import { HUDModalDialogs } from "game/hud/parts/modal_dialogs";
+import { ShapeItem } from "game/items/shape_item";
 import { typeItemSingleton } from "game/item_resolver";
 import { Mod } from "mods/mod";
 import { MODS } from "mods/modloader";
@@ -37,6 +38,7 @@ function getMod() {
 function preBindEvents() {
     if (this.id !== constantSignalItemPicker) {
         // Not a constant signal
+        return;
     }
 
     const mod = getMod();
@@ -92,6 +94,17 @@ function postInternalShowDialog(dialog) {
     dialog.valueChosen.add(handler);
 }
 
+function customPinsProvider() {
+    // We store items, but Custom Pins only takes definitions
+    // also, it is useful to filter out garbage
+
+    /** @type {import("game/base_item").BaseItem[]} */
+    const allItems = getMod().recents;
+    const shapeItems = allItems.filter((item) => item instanceof ShapeItem);
+
+    return shapeItems.map((item) => item.definition);
+}
+
 class RecentCodes extends Mod {
     init() {
         this.modInterface.runBeforeMethod(
@@ -106,7 +119,20 @@ class RecentCodes extends Mod {
             postInternalShowDialog
         );
 
+        this.signals.appBooted.add(this.initCustomPins, this);
         this.signals.gameInitialized.add(this.getRecents, this);
+    }
+
+    initCustomPins() {
+        // Custom Pins integration
+        try {
+            this.modInterface
+                .require("dengr1065:custom_pins", "^1.0.0")
+                .addProvider(customPinsProvider);
+        } catch (err) {
+            // Ignore missing ME or Custom Pins
+            console.log(err);
+        }
     }
 
     getRecents(root) {
