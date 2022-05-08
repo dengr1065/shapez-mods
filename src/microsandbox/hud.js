@@ -52,6 +52,7 @@ export class HUDMicroSandbox extends BaseHUDPart {
     initialize() {
         this.domAttach = new DynamicDomAttach(this.root, this.element);
         this.freeBlueprints = false;
+        this.unlockRewards = false;
 
         for (const integration of Object.values(integrations)) {
             if (integration.enabled && integration.createRows) {

@@ -1,4 +1,5 @@
 import { Blueprint } from "game/blueprint";
+import { HubGoals } from "game/hub_goals";
 import { HUDBlueprintPlacer } from "game/hud/parts/blueprint_placer";
 import { KEYCODES } from "game/key_action_mapper";
 import { Mod } from "mods/mod";
@@ -32,6 +33,18 @@ function getHasFreeCopyPaste(sourceMethod) {
     return sourceMethod();
 }
 
+/**
+ * Unlocking all rewards mostly affects buildings
+ * @this {HubGoals}
+ */
+function isRewardUnlocked(sourceMethod, args) {
+    if (this.root.hud.parts.microSandbox?.unlockRewards) {
+        return true;
+    }
+
+    return sourceMethod(...args);
+}
+
 class MicroSandbox extends Mod {
     init() {
         this.modInterface.registerCss(styles);
@@ -53,6 +66,13 @@ class MicroSandbox extends Mod {
             HUDBlueprintPlacer,
             "getHasFreeCopyPaste",
             getHasFreeCopyPaste
+        );
+
+        // Patches for unlocked rewards
+        this.modInterface.replaceMethod(
+            HubGoals,
+            "isRewardUnlocked",
+            isRewardUnlocked
         );
 
         this.signals.appBooted.add(() => setupIntegrations(this));

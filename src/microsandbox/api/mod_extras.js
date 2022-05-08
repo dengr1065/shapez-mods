@@ -11,6 +11,11 @@ export function getModExtrasRows(hud) {
             label: "Free Blueprints",
             getter: () => hud.freeBlueprints,
             setter: (value) => (hud.freeBlueprints = value)
+        }),
+        new ToggleRow(hud, {
+            label: "Unlock Rewards",
+            getter: () => hud.unlockRewards,
+            setter: (value) => (hud.unlockRewards = value)
         })
     ];
 }

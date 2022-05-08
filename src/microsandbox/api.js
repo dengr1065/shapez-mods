@@ -44,7 +44,7 @@ export const integrations = {
  * @param {import("mods/mod").Mod} mod
  */
 export function setupIntegrations(mod) {
-    const modRequire = mod.modInterface.require;
+    const modRequire = ModExtras.require;
     if (!modRequire) {
         // Mod Extras is not installed
         return;
@@ -52,7 +52,7 @@ export function setupIntegrations(mod) {
 
     integrations.modExtras.api = modRequire(
         integrations.modExtras.id,
-        ">=0.1.2",
+        "^0.3.0",
         true
     )?.api;
 
