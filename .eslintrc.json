@@ -10,7 +10,8 @@
         "sourceType": "module"
     },
     "globals": {
-        "registerMod": "readonly"
+        "registerMod": "readonly",
+        "ModExtras": "readonly"
     },
     "rules": {
         "no-unused-vars": "warn"
