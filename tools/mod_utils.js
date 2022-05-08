@@ -1,5 +1,5 @@
 const { valid } = require("semver");
-const { defaultAuthor, website, source } = require("./config.json");
+const { defaultAuthor, website, updateURL, source } = require("./config.json");
 const authorsData = require("./authors.json");
 
 function validateMod(metadata) {
@@ -29,6 +29,12 @@ function unwrapExtras(metadata) {
     metadata.extra ??= {};
     metadata.extra.authors ??= [];
     metadata.extra.source = source;
+
+    // This one isn't perfect, but works in my case
+    if (metadata.id) {
+        metadata.extra.updateURL = updateURL + encodeURIComponent(metadata.id);
+        metadata.id = defaultAuthor + ":" + metadata.id;
+    }
 
     const { authors } = metadata.extra;
     if (authors.length == 0) {

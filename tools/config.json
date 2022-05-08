@@ -1,5 +1,6 @@
 {
     "defaultAuthor": "dengr1065",
     "website": "https://not.kittyle.org/",
+    "updateURL": "https://not.kittyle.org/api/manifest/",
     "source": "https://github.com/dengr1065/shapez.io-mods/"
 }

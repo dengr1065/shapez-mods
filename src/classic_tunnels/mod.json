@@ -2,7 +2,7 @@
     "entry": "./index.js",
     "name": "Classic Tunnels",
     "description": "Brings back classic tunnel behavior (fixed bug) which allows you to map mutltiple tunnel entrances to a single exit.",
-    "version": "1.0.1",
-    "id": "dengr1065:classic_tunnels",
+    "version": "1.0.2",
+    "id": "classic_tunnels",
     "doesNotAffectSavegame": true
 }

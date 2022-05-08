@@ -2,7 +2,7 @@
     "entry": "./index.js",
     "name": "Lit Displays",
     "description": "What if you could see lit displays on the map view? Well, now you can!",
-    "version": "0.1.1",
-    "id": "dengr1065:lit_displays",
+    "version": "0.1.2",
+    "id": "lit_displays",
     "doesNotAffectSavegame": true
 }

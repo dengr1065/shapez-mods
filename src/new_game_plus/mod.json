@@ -2,8 +2,8 @@
     "entry": "./index.js",
     "name": "New Game+",
     "description": "Allows you to start a new game in freeplay with everything unlocked.",
-    "version": "0.2.0",
-    "id": "dengr1065:new_game_plus",
+    "version": "0.2.1",
+    "id": "new_game_plus",
     "minimumGameVersion": ">=1.5.0 <1.6.0",
     "doesNotAffectSavegame": true,
     "settings": {

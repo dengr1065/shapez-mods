@@ -5,6 +5,7 @@
     "version": "0.4.0-beta",
     "doesNotAffectSavegame": true,
     "extra": {
-        "library": true
+        "library": true,
+        "updateURL": "https://not.kittyle.org/api/manifest/mod_extras"
     }
 }

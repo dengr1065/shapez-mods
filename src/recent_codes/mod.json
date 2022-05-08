@@ -2,14 +2,15 @@
     "entry": "./index.js",
     "name": "Recent Codes",
     "description": "Shows recently used items in constant signal picker.",
-    "version": "1.1.1",
-    "id": "dengr1065:recent_codes",
+    "version": "1.1.2",
+    "id": "recent_codes",
     "doesNotAffectSavegame": true,
     "settings": {
         "recents": []
     },
     "extra": {
         "changelog": {
+            "1.1.2": ["Support for automatic updates"],
             "1.1.1": [
                 "Fixed Wires+ incompatibility (invalid element ID comparsion)"
             ],
