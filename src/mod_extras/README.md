@@ -26,15 +26,14 @@ If you're reading this section, most likely you have installed this mod. {{name}
 brings a completely new mod list, rewritten from scratch! Start typing and filter
 your sorted mod collection.
 
-Mods with missing dependencies will be brought up to attract your attention,
-while broken mods will be shown last. Toggle visibility of library mods, if you
-only care about the gameplay. Follow changes of your favorite mods and contact
-their authors, open website or view the source code!
+Outdated mods or mods with missing dependencies will be brought up to attract
+your attention, while broken mods will be shown last. Toggle visibility of library
+mods, if you only care about the gameplay. Follow changes of your favorite mods
+and contact their authors, open website or view the source code!
 
 <hr>
 
 ### Still not enough?
 
-More is planned: check for updates, use even more APIs and configure your mods!
-{{name}} continues to add more quality-of-life features to make mod management
+More is planned – {{name}} continues to add more quality-of-life features to make mod management
 easier.

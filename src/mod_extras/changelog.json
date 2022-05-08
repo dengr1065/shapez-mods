@@ -1,4 +1,9 @@
 {
+    "0.4.0-beta": [
+        "Basic built-in update checker",
+        "Exposed some methods for version comparsion and updates",
+        "Settings won't be saved anymore when exiting right from the mods list"
+    ],
     "0.3.0": ["New APIs for requirements and type checking"],
     "0.2.2": ["Limit image width in \"About this mod\" to avoid overflow"],
     "0.2.1": ["Switched to new mod build system"],

@@ -177,6 +177,24 @@
         }
     }
 
+    .notice {
+        display: flex;
+        flex-direction: column;
+        padding: 0.8em;
+        border-radius: 0.3em;
+        background-color: #2fbc3a20;
+        color: #19421c;
+
+        padding-left: 3.6em;
+        background-image: url("../assets/update.svg");
+        background-repeat: no-repeat;
+        background-size: 2em;
+        background-position: 0.8em 50%;
+
+        .textOf(noticeTitle, 120%);
+        .textOf(noticeSummary, 100%, 0.9);
+    }
+
     .modReadme {
         * {
             pointer-events: all;

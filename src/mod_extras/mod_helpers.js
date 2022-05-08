@@ -1,6 +1,6 @@
 import { MODS } from "mods/modloader";
 import semver from "semver";
-import { T } from "./constants";
+import { getMod, T } from "./constants";
 import { modRequire } from "./mod_require";
 
 /**
@@ -168,7 +168,14 @@ export function hasExtraMetadata(mod) {
         return false;
     }
 
-    const props = ["icon", "authors", "readme", "source", "changelog"];
+    const props = [
+        "icon",
+        "authors",
+        "readme",
+        "source",
+        "changelog",
+        "updateURL"
+    ];
     return props.some((prop) =>
         Object.prototype.hasOwnProperty.call(mod.metadata.extra, prop)
     );
@@ -197,10 +204,127 @@ export function getSortedMods() {
         let result = 0;
         result -= isValidVersion(a) - isValidVersion(b);
         result -= hasMissingDeps(a) - hasMissingDeps(b);
+        result -= isUpdateAvailable(a) - isUpdateAvailable(b);
         // TODO: sort mods with satisfied conflicts higher
 
         return result;
     }
 
     return [...MODS.mods].sort(sort);
+}
+
+/**
+ * Returns latest version of specified mod, relies on updates cache.
+ * @param {import("mods/mod").Mod} mod
+ */
+export function getLatestVersion(mod) {
+    if (!isValidVersion(mod)) {
+        return null;
+    }
+
+    const modExtras = getMod();
+    const usePrerelease = modExtras.settings.prereleaseUpdates;
+    const cached = modExtras.settings.updatesCache[mod.metadata.id];
+
+    if (cached && !(!usePrerelease && semver.prerelease(cached.version))) {
+        return cached.version;
+    }
+
+    return semver.clean(mod.metadata.version);
+}
+
+/**
+ * Used to check whether a mod can be updated (cached)
+ * @param {import("mods/mod").Mod} mod
+ */
+export function isUpdateAvailable(mod) {
+    const latest = getLatestVersion(mod);
+    const cleanVersion = semver.clean(mod.metadata.version);
+
+    return latest !== null && semver.gt(latest, cleanVersion);
+}
+
+/**
+ * @param {import("mods/mod").Mod} mod
+ */
+export function getUpdateSummary(mod) {
+    if (!isUpdateAvailable(mod)) {
+        return;
+    }
+
+    return getMod().settings.updatesCache[mod.metadata.id].summary;
+}
+
+/**
+ * @param {import("mods/mod").Mod} mod
+ */
+export async function checkForUpdates(mod) {
+    const modExtras = getMod();
+    if (!modExtras.settings.enableUpdateChecks) {
+        // Updates completely disabled
+        return false;
+    }
+
+    if (!hasExtraMetadata(mod) || !("updateURL" in mod.metadata.extra)) {
+        // No updateURL, what can we do???
+        return false;
+    }
+
+    if (!isValidVersion(mod)) {
+        // Nope, garbage mods not allowed (won't work anyway)
+        return false;
+    }
+
+    if (modExtras.settings.updatesBlocklist.includes(mod.metadata.id)) {
+        // End user excluded this mod from update checking
+        return false;
+    }
+
+    const usePrerelease = modExtras.settings.prereleaseUpdates;
+    const cached = modExtras.settings.updatesCache[mod.metadata.id];
+
+    if (!cached || Date.now() - cached.lastChecked > 600_000) {
+        try {
+            const response = await fetch(mod.metadata.extra.updateURL);
+            if (!response.ok) {
+                throw new Error("Server returned an error: " + response.status);
+            }
+
+            const result = await response.json();
+            let version = result.version;
+
+            if (usePrerelease && result.prereleaseVersion) {
+                version = result.prereleaseVersion;
+            }
+
+            version = semver.clean(version);
+            if (
+                version === null ||
+                (!usePrerelease && semver.prerelease(version))
+            ) {
+                // Oops! We got some garbage
+                return false;
+            }
+
+            modExtras.settings.updatesCache[mod.metadata.id] = {
+                lastChecked: Date.now(),
+                summary: result.updateSummary?.toString(),
+                version
+            };
+
+            return version;
+        } catch (err) {
+            modExtras.logger.error(
+                "Failed to retrieve update status for",
+                mod.metadata.name,
+                "error:",
+                err
+            );
+
+            return false;
+        }
+    }
+
+    const current = semver.clean(mod.metadata.version);
+    return semver.gt(cached.version, current) ? cached.version : false;
 }

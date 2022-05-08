@@ -3,6 +3,7 @@ import { MODS } from "mods/modloader";
 export const MOD_ID = "dengr1065:mod_extras";
 export const MOD_IO_LINK = "https://shapez.mod.io/";
 
+/** @returns {import("./index").ModExtras} */
 export function getMod() {
     return MODS.mods.find((mod) => mod.metadata.id == MOD_ID);
 }
@@ -46,6 +47,7 @@ export const T = {
     readme: "About this mod",
     // Generic
     modVersion: "version <x>",
+    modVersionUpdate: "version <x> - update available!",
     authors: {
         none: "No authors specified.",
         two: "<0> and <1>",
@@ -56,6 +58,10 @@ export const T = {
         view: "Changelog",
         noChanges: "No changes specified.",
         installed: "<version> (installed)"
+    },
+    update: {
+        title: "New version available - <x>",
+        noSummary: "There's no information about this update."
     }
 };
 

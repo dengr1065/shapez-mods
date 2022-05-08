@@ -12,7 +12,10 @@ import {
     getDependencies,
     getScreenshots,
     dependencyLabel,
-    getChangelog
+    getChangelog,
+    isUpdateAvailable,
+    getLatestVersion,
+    getUpdateSummary
 } from "./mod_helpers";
 import { makeToggleButton } from "./ui/toggle_button";
 import defaultIcon from "./assets/default_icon.webp";
@@ -208,6 +211,14 @@ export class ModListState extends TextualGameState {
         }
     }
 
+    renderNotice(element, title, summary) {
+        const notice = makeDivElement(undefined, ["notice"]);
+        makeDiv(notice, undefined, ["noticeTitle"]).innerText = title;
+        makeDiv(notice, undefined, ["noticeSummary"]).innerText = summary;
+
+        element.appendChild(notice);
+    }
+
     renderInfoContainer() {
         const mod = this.modList.selectedItem;
         const element = makeDivElement(undefined, ["infoContainer"]);
@@ -285,6 +296,17 @@ export class ModListState extends TextualGameState {
         if (getDependencies(mod).length || getScreenshots(mod).length) {
             const advInfo = makeDiv(element, undefined, ["advancedInfo"]);
             this.renderAdvancedInfo(advInfo, mod);
+        }
+
+        if (isUpdateAvailable(mod)) {
+            const newVersion = getLatestVersion(mod);
+            const updateSummary = getUpdateSummary(mod);
+
+            this.renderNotice(
+                element,
+                T.update.title.replace("<x>", newVersion),
+                updateSummary ?? T.update.noSummary
+            );
         }
 
         if (extra.readme) {
@@ -380,6 +402,28 @@ export class ModListState extends TextualGameState {
             this.modList.refresh();
         });
 
+        // Do an initial check for mod updates
+        this.mod.checkForModUpdates().then(() => {
+            // Update older mod entries
+            for (const entry of this.modList.listEntries) {
+                const hasUpdate = isUpdateAvailable(entry.item);
+                entry.element.classList.toggle("updateAvailable", hasUpdate);
+
+                if (hasUpdate) {
+                    // It sucks to duplicate this code, but I'm afraid
+                    // to touch anything.
+                    const version = entry.element.querySelector(".version");
+                    const text = T.modVersionUpdate.replace(
+                        "<x>",
+                        entry.item.metadata.version
+                    );
+                    version.innerText = text;
+                }
+            }
+
+            this.modList.refresh();
+        });
+
         // Render when entering state
         this.modList.refresh();
         this.renderInfo();
@@ -390,13 +434,7 @@ export class ModListState extends TextualGameState {
         ipcRenderer.invoke("open-mods-folder");
     }
 
-    onBeforeExit() {
-        this.mod.saveSettings();
-    }
-
     onLeave() {
-        // The docs are lying. onBeforeExit IS NOT called
-        // when leaving the state.
-        this.onBeforeExit();
+        this.mod.saveSettings();
     }
 }

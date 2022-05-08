@@ -10,13 +10,18 @@ import api from "./api";
 import { StorageImplElectron } from "platform/electron/storage";
 import { defaultSettings, readSettings, saveSettings } from "./settings";
 import metadata from "./ui/metadata";
+import { createLogger } from "core/logging";
+import { MODS } from "mods/modloader";
+import { checkForUpdates } from "./mod_helpers";
 
 ModInterface.prototype["require"] = modRequire;
 
-class ModExtras extends Mod {
+// Export needed for type checking
+export class ModExtras extends Mod {
     constructor(properties) {
         super(properties);
 
+        this.logger = createLogger("ModExtras");
         this.storage = new StorageImplElectron(this.app);
         this.settings = defaultSettings;
         this.api = api;
@@ -47,6 +52,19 @@ class ModExtras extends Mod {
 
     registerState() {
         this.app.stateMgr.register(ModListState);
+    }
+
+    /**
+     * Used primarily to update the cache, return values are ignored.
+     */
+    async checkForModUpdates() {
+        const pending = [];
+        for (const mod of MODS.mods) {
+            pending.push(checkForUpdates(mod));
+        }
+
+        await Promise.all(pending);
+        return;
     }
 
     moveToState(superMethod, [stateKey, ...params]) {
