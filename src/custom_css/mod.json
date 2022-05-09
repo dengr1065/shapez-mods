@@ -3,7 +3,7 @@
     "name": "Custom CSS/LESS",
     "description": "Customize the UI with CSS/LESS using a built-in code editor.",
     "version": "0.1.2",
-    "id": "dengr1065:custom_css",
+    "id": "custom_css",
     "minimumGameVersion": ">=1.5.0",
     "doesNotAffectSavegame": true,
     "settings": {
