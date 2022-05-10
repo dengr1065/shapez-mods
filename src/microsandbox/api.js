@@ -52,7 +52,7 @@ export function setupIntegrations(mod) {
 
     integrations.modExtras.api = modRequire(
         integrations.modExtras.id,
-        "^0.3.0",
+        "0.x",
         true
     )?.api;
 
