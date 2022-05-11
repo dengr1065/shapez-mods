@@ -39,12 +39,16 @@ export class MapObserverSettingsState extends TextualGameState {
     onEnter() {
         const settings = this.mod.settings;
 
+        const useHotkeys = makeCheckboxInput(settings.useHotkeys);
         const customizeGrid = makeCheckboxInput(settings.customizeGrid);
         const backgroundInput = makeColorInput(settings.gridBackground);
         const foregroundInput = makeColorInput(settings.gridForeground);
 
+        useHotkeys.addEventListener("change", () => {
+            settings.useHotkeys = useHotkeys.checked;
+        });
+
         customizeGrid.addEventListener("change", () => {
-            console.log("Change fires");
             settings.customizeGrid = customizeGrid.checked;
         });
 
@@ -67,6 +71,7 @@ export class MapObserverSettingsState extends TextualGameState {
         ].join("<br>");
         content.appendChild(zoomOutLimitHint);
 
+        content.appendChild(labelWrap("Toggle Mode (Keybinding)", useHotkeys));
         content.appendChild(labelWrap("Customize Grid Colors", customizeGrid));
         content.appendChild(labelWrap("Background Color", backgroundInput));
         content.appendChild(labelWrap("Grid Lines", foregroundInput));
@@ -79,10 +84,5 @@ export class MapObserverSettingsState extends TextualGameState {
     onLeave() {
         this.mod.saveSettings();
         this.mod.setConfig();
-    }
-
-    onBeforeExit() {
-        // lies!!!
-        this.onLeave();
     }
 }

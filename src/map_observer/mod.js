@@ -1,4 +1,5 @@
 import { globalConfig } from "core/config";
+import { keyToKeyCode } from "game/key_action_mapper";
 import { THEMES } from "game/theme";
 import { Mod } from "mods/mod";
 import { StorageImplElectron } from "platform/electron/storage";
@@ -8,6 +9,7 @@ import settingsCSS from "./settings.less";
 
 const defaultSettings = {
     minZoom: 0.6,
+    useHotkeys: false,
     customizeGrid: false,
     gridBackground: "#1a2b19",
     gridForeground: "#243d23"
@@ -23,6 +25,13 @@ class MapObserver extends Mod {
         this.settingsFile = this.metadata.id + "_settings.json";
         this.saveSettings = () => this.saveCustomSettings();
         this.prepareSettings();
+
+        this.modInterface.registerIngameKeybinding({
+            id: "map_observer_toggle",
+            keyCode: keyToKeyCode("U"),
+            translation: "Toggle Map View",
+            handler: this.toggleMapView.bind(this)
+        });
 
         this.signals.appBooted.add(() => {
             // Store vanilla theme colors so we can disable the customization
@@ -72,6 +81,11 @@ class MapObserver extends Mod {
         // This is a "single line" mod, but it's useful for some people.
         globalConfig.mapChunkOverviewMinZoom = this.settings.minZoom ?? 0.6;
 
+        if (this.settings.useHotkeys) {
+            // Start with map view off
+            globalConfig.mapChunkOverviewMinZoom = 0;
+        }
+
         if (this.settings.customizeGrid) {
             // Set our customized colors
             for (const theme in THEMES) {
@@ -85,6 +99,21 @@ class MapObserver extends Mod {
                 THEMES[theme].map.background = vanilla.background;
                 THEMES[theme].map.grid = vanilla.grid;
             }
+        }
+    }
+
+    toggleMapView() {
+        if (!this.settings.useHotkeys) {
+            return;
+        }
+
+        const current = globalConfig.mapChunkOverviewMinZoom;
+        if (current == 0) {
+            // Force map view
+            globalConfig.mapChunkOverviewMinZoom = globalConfig.maxZoomLevel;
+        } else {
+            // Force normal view
+            globalConfig.mapChunkOverviewMinZoom = 0;
         }
     }
 }
