@@ -2,7 +2,7 @@
     "entry": "./index.js",
     "name": "Mod Extras",
     "description": "Improves mod list and allows mod authors to show more information.",
-    "version": "0.4.0-beta",
+    "version": "0.4.0-beta2",
     "doesNotAffectSavegame": true,
     "extra": {
         "library": true,

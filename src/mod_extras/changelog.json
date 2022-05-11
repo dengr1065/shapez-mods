@@ -1,4 +1,8 @@
 {
+    "0.4.0-beta2": [
+        "Fixed update sorting and update cache",
+        "New FilteredList method: select(T)"
+    ],
     "0.4.0-beta": [
         "Basic built-in update checker",
         "Exposed some methods for version comparsion and updates",

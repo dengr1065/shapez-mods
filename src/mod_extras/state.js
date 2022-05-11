@@ -64,9 +64,11 @@ export class ModListState extends TextualGameState {
         element.classList.add("mod");
         element.style.backgroundImage = `url('${extra?.icon ?? defaultIcon}')`;
 
+        const hasUpdate = isUpdateAvailable(mod);
         element.classList.toggle("library", extra?.library ?? false);
         element.classList.toggle("invalid", !isValidVersion(mod));
         element.classList.toggle("missingDeps", hasMissingDeps(mod));
+        element.classList.toggle("updateAvailable", hasUpdate);
 
         const basicInfo = makeDiv(element, undefined, ["basicInfo"]);
         makeDiv(basicInfo, undefined, ["name"]).innerText = mod.metadata.name;
@@ -75,8 +77,10 @@ export class ModListState extends TextualGameState {
 
         makeDiv(element, undefined, ["description"]).innerText =
             mod.metadata.description;
+
+        const versionText = hasUpdate ? T.modVersionUpdate : T.modVersion;
         makeDiv(element, undefined, ["version"]).innerText =
-            T.modVersion.replace("<x>", mod.metadata.version);
+            versionText.replace("<x>", mod.metadata.version);
 
         return element;
     }
@@ -404,24 +408,12 @@ export class ModListState extends TextualGameState {
 
         // Do an initial check for mod updates
         this.mod.checkForModUpdates().then(() => {
-            // Update older mod entries
-            for (const entry of this.modList.listEntries) {
-                const hasUpdate = isUpdateAvailable(entry.item);
-                entry.element.classList.toggle("updateAvailable", hasUpdate);
+            // Re-render the list, keep selected item
+            const oldSelected = this.modList.selectedItem;
+            this.modList.list = getSortedMods();
+            this.modList.refresh(true);
 
-                if (hasUpdate) {
-                    // It sucks to duplicate this code, but I'm afraid
-                    // to touch anything.
-                    const version = entry.element.querySelector(".version");
-                    const text = T.modVersionUpdate.replace(
-                        "<x>",
-                        entry.item.metadata.version
-                    );
-                    version.innerText = text;
-                }
-            }
-
-            this.modList.refresh();
+            this.modList.select(oldSelected);
         });
 
         // Render when entering state

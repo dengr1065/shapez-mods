@@ -174,4 +174,16 @@ export class FilteredList {
             item.element.classList.remove("selected");
         }
     }
+
+    /**
+     * Select the specified item and dispatch itemSelected signal.
+     * @param {T} newItem
+     */
+    select(newItem) {
+        this.listEntries
+            .find(({ item }) => {
+                return item == newItem;
+            })
+            ?.element.click();
+    }
 }
