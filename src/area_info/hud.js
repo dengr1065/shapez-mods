@@ -111,7 +111,27 @@ export class HUDAreaInfo extends BaseHUDPart {
         }
 
         const blueprint = placer.currentBlueprint.get();
+        const fields = this.mod.settings.fields;
+        const costOnly = fields.length == 1 && fields.includes("cost");
+
         this.selectedBuildings.set([...selector.selectedUids]);
-        this.domAttach.update(!blueprint && selector.selectedUids.size > 0);
+        let shouldShow = selector.selectedUids.size > 0;
+
+        if (this.mod.settings.useForBlueprints && blueprint && !costOnly) {
+            shouldShow = true;
+        }
+
+        this.domAttach.update(shouldShow);
+        this.element.classList.toggle("forceHideCost", blueprint);
+
+        const heightProp = "--area-info-hud-height";
+        const currentHeight = document.body.style.getPropertyValue(heightProp);
+        const newHeight = this.element.clientHeight + "px";
+
+        if (currentHeight == newHeight) {
+            return;
+        }
+
+        document.body.style.setProperty(heightProp, newHeight);
     }
 }

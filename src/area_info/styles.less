@@ -14,6 +14,18 @@
     font-display: block;
 }
 
+#ingame_HUD_BlueprintPlacer.withAreaInfo {
+    top: calc(15% + 8px * var(--ui-scale) + var(--area-info-hud-height));
+
+    > .label {
+        display: none;
+    }
+}
+
+#ingame_HUD_AreaInfo.forceHideCost .cost.visible {
+    display: none;
+}
+
 #ingame_HUD_AreaInfo {
     font-family: "Share Tech Mono";
     font-size: 85%;

@@ -2,10 +2,12 @@
     "entry": "./mod.js",
     "name": "Area Info",
     "description": "Shows more information about building selection.",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "id": "area_info",
     "doesNotAffectSavegame": true,
     "settings": {
+        "useForBlueprints": false,
+        "hideBlueprintPlacer": false,
         "fields": ["buildings", "cost", "area", "density"],
         "background": "#242e58b0",
         "foreground": "#ffffff"
