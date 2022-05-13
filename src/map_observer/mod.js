@@ -1,4 +1,5 @@
 import { globalConfig } from "core/config";
+import { Camera } from "game/camera";
 import { keyToKeyCode } from "game/key_action_mapper";
 import { THEMES } from "game/theme";
 import { Mod } from "mods/mod";
@@ -6,10 +7,13 @@ import { StorageImplElectron } from "platform/electron/storage";
 import info from "./mod.json";
 import { MapObserverSettingsState } from "./settings";
 import settingsCSS from "./settings.less";
+import { internalUpdateZooming } from "./smooth_zoom";
 
 const defaultSettings = {
     minZoom: 0.6,
     useHotkeys: false,
+    smoothZoom: true,
+    smoothZoomSpeed: 1,
     customizeGrid: false,
     gridBackground: "#1a2b19",
     gridForeground: "#243d23"
@@ -24,7 +28,11 @@ class MapObserver extends Mod {
         this.storage = new StorageImplElectron(this.app);
         this.settingsFile = this.metadata.id + "_settings.json";
         this.saveSettings = () => this.saveCustomSettings();
-        this.prepareSettings();
+
+        const settingsPromise = this.prepareSettings();
+        const appBootedPromise = new Promise((resolve) => {
+            this.signals.appBooted.add(resolve);
+        });
 
         this.modInterface.registerIngameKeybinding({
             id: "map_observer_toggle",
@@ -33,18 +41,32 @@ class MapObserver extends Mod {
             handler: this.toggleMapView.bind(this)
         });
 
-        this.signals.appBooted.add(() => {
-            // Store vanilla theme colors so we can disable the customization
-            for (const theme in THEMES) {
-                vanillaThemeMapColors[theme] = {
-                    background: THEMES[theme].map.background,
-                    grid: THEMES[theme].map.grid
-                };
-            }
-
-            this.modInterface.registerGameState(MapObserverSettingsState);
-            this.setConfig();
+        this.modInterface.registerIngameKeybinding({
+            id: "map_observer_set_min_zoom",
+            keyCode: keyToKeyCode("I"),
+            translation: "Zoom out as much as possible in Regular View",
+            handler: this.toggleMinZoom.bind(this)
         });
+
+        const mod = this;
+        this.modInterface.replaceMethod(
+            Camera,
+            "internalUpdateZooming",
+            function (srcMethod, [now, dt]) {
+                if (!mod.settings.smoothZoom) {
+                    return srcMethod(now, dt);
+                }
+
+                internalUpdateZooming.call(
+                    this,
+                    dt * mod.settings.smoothZoomSpeed
+                );
+            }
+        );
+
+        Promise.all([settingsPromise, appBootedPromise]).then(
+            this.onReady.bind(this)
+        );
     }
 
     async prepareSettings() {
@@ -68,6 +90,20 @@ class MapObserver extends Mod {
         }
     }
 
+    async onReady() {
+        // Store vanilla theme colors so we can disable the customization
+        for (const theme in THEMES) {
+            vanillaThemeMapColors[theme] = {
+                background: THEMES[theme].map.background,
+                grid: THEMES[theme].map.grid
+            };
+        }
+
+        this.modInterface.registerGameState(MapObserverSettingsState);
+        this.setConfig();
+        console.log("booted", this.settings);
+    }
+
     async saveCustomSettings() {
         const data = this.serializeSettings(this.settings);
         await this.storage.writeFileAsync(this.settingsFile, data);
@@ -79,7 +115,7 @@ class MapObserver extends Mod {
 
     setConfig() {
         // This is a "single line" mod, but it's useful for some people.
-        globalConfig.mapChunkOverviewMinZoom = this.settings.minZoom ?? 0.6;
+        globalConfig.mapChunkOverviewMinZoom = this.settings.minZoom;
 
         if (this.settings.useHotkeys) {
             // Start with map view off
@@ -110,11 +146,23 @@ class MapObserver extends Mod {
         const current = globalConfig.mapChunkOverviewMinZoom;
         if (current == 0) {
             // Force map view
-            globalConfig.mapChunkOverviewMinZoom = globalConfig.maxZoomLevel;
+            globalConfig.mapChunkOverviewMinZoom = Infinity;
         } else {
             // Force normal view
             globalConfig.mapChunkOverviewMinZoom = 0;
         }
+    }
+
+    /**
+     * @param {import("game/root").GameRoot} root
+     */
+    toggleMinZoom(root) {
+        if (!Number.isFinite(globalConfig.mapChunkOverviewMinZoom)) {
+            // Only map view can be used
+            return;
+        }
+
+        root.camera.desiredZoom = globalConfig.mapChunkOverviewMinZoom;
     }
 }
 

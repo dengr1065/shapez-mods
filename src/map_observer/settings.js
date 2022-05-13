@@ -40,12 +40,17 @@ export class MapObserverSettingsState extends TextualGameState {
         const settings = this.mod.settings;
 
         const useHotkeys = makeCheckboxInput(settings.useHotkeys);
+        const smoothZoom = makeCheckboxInput(settings.smoothZoom);
         const customizeGrid = makeCheckboxInput(settings.customizeGrid);
         const backgroundInput = makeColorInput(settings.gridBackground);
         const foregroundInput = makeColorInput(settings.gridForeground);
 
         useHotkeys.addEventListener("change", () => {
             settings.useHotkeys = useHotkeys.checked;
+        });
+
+        smoothZoom.addEventListener("change", () => {
+            settings.smoothZoom = smoothZoom.checked;
         });
 
         customizeGrid.addEventListener("change", () => {
@@ -72,6 +77,7 @@ export class MapObserverSettingsState extends TextualGameState {
         content.appendChild(zoomOutLimitHint);
 
         content.appendChild(labelWrap("Toggle Mode (Keybinding)", useHotkeys));
+        content.appendChild(labelWrap("Alternative Smooth Zoom", smoothZoom));
         content.appendChild(labelWrap("Customize Grid Colors", customizeGrid));
         content.appendChild(labelWrap("Background Color", backgroundInput));
         content.appendChild(labelWrap("Grid Lines", foregroundInput));
