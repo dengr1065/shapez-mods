@@ -1,0 +1,8 @@
+{
+    "entry": "./mod.js",
+    "name": "Trash Fixer",
+    "description": "Don't let your trash cans fall over! This mod corrects trash can rotation and makes sure they can't fall over.",
+    "version": "1.0.0",
+    "id": "trash_fixer",
+    "doesNotAffectSavegame": true
+}
