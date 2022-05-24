@@ -8,9 +8,11 @@ import info from "./mod.json";
 import { MapObserverSettingsState } from "./settings";
 import settingsCSS from "./settings.less";
 import { internalUpdateZooming } from "./smooth_zoom";
+import readme from "./README.md";
 
 const defaultSettings = {
     minZoom: 0.6,
+    minMapViewZoom: globalConfig.minZoomLevel,
     useHotkeys: false,
     smoothZoom: true,
     smoothZoomSpeed: 1,
@@ -90,7 +92,7 @@ class MapObserver extends Mod {
         }
     }
 
-    async onReady() {
+    onReady() {
         // Store vanilla theme colors so we can disable the customization
         for (const theme in THEMES) {
             vanillaThemeMapColors[theme] = {
@@ -101,7 +103,6 @@ class MapObserver extends Mod {
 
         this.modInterface.registerGameState(MapObserverSettingsState);
         this.setConfig();
-        console.log("booted", this.settings);
     }
 
     async saveCustomSettings() {
@@ -114,8 +115,13 @@ class MapObserver extends Mod {
     }
 
     setConfig() {
-        // This is a "single line" mod, but it's useful for some people.
         globalConfig.mapChunkOverviewMinZoom = this.settings.minZoom;
+
+        // Need to limit this, lower values are quite dangerous
+        globalConfig.minZoomLevel = Math.max(
+            this.settings.minMapViewZoom,
+            0.01
+        );
 
         if (this.settings.useHotkeys) {
             // Start with map view off
@@ -166,4 +172,5 @@ class MapObserver extends Mod {
     }
 }
 
+info.extra.readme = readme;
 registerMod(MapObserver, info);
