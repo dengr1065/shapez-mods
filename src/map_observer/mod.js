@@ -66,6 +66,12 @@ class MapObserver extends Mod {
             }
         );
 
+        this.modInterface.replaceMethod(
+            Camera,
+            "getMinimumZoom",
+            () => globalConfig.minZoomLevel
+        );
+
         Promise.all([settingsPromise, appBootedPromise]).then(
             this.onReady.bind(this)
         );
