@@ -10,7 +10,7 @@
 import info from "./mod.json";
 
 const betaLine = "You're on a beta version of ColorCoded, expect some bugs.";
-const issuesLink = "https://github.com/dengr1065/shapez.io-mods/issues".replace(
+const issuesLink = "https://github.com/dengr1065/shapez-mods/issues".replace(
     /.+/,
     '<a href="$&">$&</a>'
 );
