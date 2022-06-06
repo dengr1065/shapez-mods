@@ -44,7 +44,7 @@ export const integrations = {
  * @param {import("mods/mod").Mod} mod
  */
 export function setupIntegrations(mod) {
-    const modRequire = ModExtras.require;
+    const modRequire = ModExtras?.require;
     if (!modRequire) {
         // Mod Extras is not installed
         return;
