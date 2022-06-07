@@ -1,30 +1,33 @@
-import { MapChunkView } from "game/map_chunk_view";
-import { DisplaySystem } from "game/systems/display";
+import { makeOffscreenBuffer } from "core/buffer_utils";
+import { globalConfig } from "core/config";
 import { Mod } from "mods/mod";
-import { ldDrawMapView } from "./display";
+import { renderDisplays } from "./display";
 import info from "./mod.json";
+import icon from "./icon.webp";
 
-/**
- * @this {MapChunkView}
- * @param {import("core/draw_parameters").DrawParameters} parameters
- * @param {number} xoff
- * @param {number} yoff
- */
-function drawMapViewDisplays(parameters) {
-    parameters.context.imageSmoothingEnabled = false;
-    this.root.systemMgr.systems.display._ldDrawMapView(parameters, this);
-    parameters.context.imageSmoothingEnabled = true;
-}
-
-class LitDisplays extends Mod {
+export class LitDisplays extends Mod {
     init() {
-        DisplaySystem.prototype._ldDrawMapView = ldDrawMapView;
-        this.modInterface.runAfterMethod(
-            MapChunkView,
-            "drawOverlayPatches",
-            drawMapViewDisplays
+        const [canvas, context] = makeOffscreenBuffer(
+            globalConfig.mapChunkWorldSize,
+            globalConfig.mapChunkWorldSize,
+            { smooth: false }
         );
+
+        this.canvas = canvas;
+        this.context = context;
+
+        this.signals.appBooted.add(this.setDrawHook, this);
+    }
+
+    setDrawHook() {
+        const overviewHook = ModExtras.require(
+            "dengr1065:overview_hook",
+            "^1.0.0"
+        );
+
+        overviewHook.hook(this, renderDisplays.bind(this));
     }
 }
 
+info.extra.icon = icon;
 registerMod(LitDisplays, info);

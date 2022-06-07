@@ -2,7 +2,12 @@
     "entry": "./index.js",
     "name": "Lit Displays",
     "description": "What if you could see lit displays on the map view? Well, now you can!",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "id": "lit_displays",
-    "doesNotAffectSavegame": true
+    "doesNotAffectSavegame": true,
+    "extra": {
+        "requires": {
+            "dengr1065:overview_hook": "^1.0.0"
+        }
+    }
 }

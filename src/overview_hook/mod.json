@@ -1,0 +1,11 @@
+{
+    "entry": "./mod.js",
+    "name": "Overview Hook",
+    "description": "Adds a hook to make rendering in Map Overview easier.",
+    "version": "1.0.0",
+    "id": "overview_hook",
+    "doesNotAffectSavegame": true,
+    "extra": {
+        "library": true
+    }
+}
