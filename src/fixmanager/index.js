@@ -5,6 +5,7 @@ import { builtInFixes, initializeFixes } from "./builtin";
 import * as fixStore from "./fix_store";
 import styles from "./styles.less";
 import metadata from "./mod.json";
+import icon from "./assets/icon.webp";
 import { FixesState, mainMenuPostEnter } from "./fixes_state";
 import { MainMenuState } from "states/main_menu";
 
@@ -105,4 +106,5 @@ class FixManager extends Mod {
     }
 }
 
+metadata.extra.icon = icon;
 registerMod(FixManager, metadata);
