@@ -10,6 +10,7 @@
         "sourceType": "module"
     },
     "globals": {
+        "shapez": "readonly",
         "registerMod": "readonly",
         "ModExtras": "readonly"
     },
