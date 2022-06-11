@@ -12,6 +12,11 @@ import { ColorItem } from "game/items/color_item";
  * @this {import("./index").LitDisplays}
  */
 export function renderDisplays(root, chunk, parameters, offsetX, offsetY) {
+    if (root.currentLayer === "wires" && !this.renderOnWiresLayer) {
+        // Rendering on Wires layer is disabled
+        return;
+    }
+
     parameters.context.imageSmoothingEnabled = false;
     const contents = chunk.containedEntitiesByLayer.regular;
 

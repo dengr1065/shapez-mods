@@ -16,6 +16,8 @@ export class LitDisplays extends Mod {
         this.canvas = canvas;
         this.context = context;
 
+        this.renderOnWiresLayer = true;
+
         this.signals.appBooted.add(this.setDrawHook, this);
     }
 
@@ -26,6 +28,17 @@ export class LitDisplays extends Mod {
         );
 
         overviewHook.hook(this, renderDisplays.bind(this));
+    }
+
+    provideFixes() {
+        /** @type {Fix} */
+        const renderOnWiresLayerFix = {
+            id: this.metadata.id + ":skip_render_on_wires_layer",
+            name: "Don't show on Wires layer",
+            enable: () => (this.renderOnWiresLayer = false),
+            disable: () => (this.renderOnWiresLayer = true)
+        };
+        return [renderOnWiresLayerFix];
     }
 }
 
