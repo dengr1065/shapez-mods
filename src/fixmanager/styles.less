@@ -1,0 +1,127 @@
+@colorOff: #db3d3d;
+@colorOn: #38b61f;
+
+.vanillaBox() {
+    border-radius: calc(6px * var(--ui-scale));
+    box-shadow: 0 calc(5px * var(--ui-scale)) calc(15px * var(--ui-scale))
+        rgba(0, 0, 0, 0.2);
+}
+
+#state_MainMenuState .mainWrapper {
+    grid-template-rows: 1fr auto;
+
+    > .mainContainer {
+        grid-row: 1 / 3;
+        grid-column: 1 / 2;
+    }
+
+    > .buttonsContainer {
+        // Can't redo the whole menu, use pixel fuckery
+        width: calc(280px * var(--ui-scale));
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+        display: flex;
+        gap: 0.5em;
+    }
+
+    #gameFixes {
+        position: relative;
+        width: 100%;
+        padding: 0.5em;
+        pointer-events: all;
+        text-transform: uppercase;
+        background: #ffffff;
+        .vanillaBox();
+
+        &::after {
+            position: absolute;
+            content: "";
+            top: 50%;
+            right: 0.8em;
+            width: 0.8em;
+            height: 0.8em;
+            transform: translateY(-50%) rotate(45deg);
+            border: 1px solid #555555;
+            border-left-color: transparent;
+            border-bottom-color: transparent;
+        }
+
+        [data-theme="dark"] & {
+            background: #484c58;
+
+            &::after {
+                border-top-color: #ffffff;
+                border-right-color: #ffffff;
+            }
+        }
+    }
+}
+
+#state_FixesState {
+    .mainContent {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4em;
+        padding: 0.8em;
+        max-width: 40em;
+        margin: 0 auto;
+    }
+
+    .modHeader {
+        text-transform: uppercase;
+        font-size: 130%;
+        opacity: 0.7;
+    }
+
+    .fix {
+        display: grid;
+        pointer-events: all;
+        align-items: center;
+        grid-template-columns: 1fr auto;
+        gap: 1em;
+        font-size: 110%;
+
+        .error {
+            color: @colorOff;
+        }
+    }
+
+    input[type="checkbox"] {
+        all: unset;
+        display: inline-block;
+        position: relative;
+        width: 2.8em;
+        height: 1.6em;
+        // Handled on our own
+        pointer-events: none;
+
+        background: @colorOff;
+        overflow: hidden;
+        .vanillaBox();
+
+        &:checked {
+            background: @colorOn;
+
+            &::after {
+                content: "⏐";
+                left: unset;
+                right: 0.25em;
+            }
+        }
+
+        &::after {
+            position: absolute;
+            content: "○";
+            text-align: center;
+            background: #222222;
+            color: #ffffff;
+            border-radius: 0.2em;
+            box-shadow: 0 0.05em 0.15em rgba(0, 0, 0, 0.3);
+            line-height: 0.8em;
+            width: 1.15em;
+            top: 0.25em;
+            bottom: 0.3em;
+            left: 0.25em;
+        }
+    }
+}
