@@ -10,6 +10,7 @@ import { resources } from "./themes";
 import { THEMES } from "game/theme";
 import { COLOR_FILTERS, getColorFilter } from "./filters";
 import { Signal } from "core/signal";
+import { GameCore } from "game/core";
 
 import * as systemPatches from "./system_patches";
 import * as beltPatches from "./belts/belt_patches";
@@ -19,6 +20,8 @@ import { MainMenuState } from "states/main_menu";
 
 import css from "./hud.css";
 import info from "./mod.json";
+import icon from "./metadata/icon.webp";
+import screenshot0 from "./metadata/screenshot0.png";
 
 import { DISCLAIMER } from "./cringe";
 
@@ -40,6 +43,15 @@ class ColorCoded extends Mod {
                 this.modInterface.replaceMethod(cls, method, patches[method]);
             }
         }
+
+        // make sure the signal is registered, as soon as possible
+        this.modInterface.runBeforeMethod(
+            GameCore,
+            "internalInitCanvas",
+            function () {
+                this.root.signals[SIGNAL_NAME] = new Signal();
+            }
+        );
 
         // once the game is initialized, all modded colors should be present
         this.signals.appBooted.add(this.setMissingColors, this);
@@ -121,4 +133,6 @@ class ColorCoded extends Mod {
     }
 }
 
+info.extra.icon = icon;
+info.extra.screenshots = [screenshot0];
 registerMod(ColorCoded, info);

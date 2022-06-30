@@ -1,5 +1,5 @@
 import { round2Digits } from "core/utils";
-import { enumColors } from "game/colors";
+import { enumColors, enumColorsToHexCode } from "game/colors";
 
 export const COLOR_FILTERS = {};
 
@@ -43,7 +43,8 @@ export function getColorFilter(item) {
         return "grayscale(1) brightness(1.1)";
     }
 
-    const hex = item.getBackgroundColorAsResource();
+    const hex =
+        item.getBackgroundColorAsResource() ?? enumColorsToHexCode[item.color];
     if (!hex) {
         // color is not available in our theme
         return "grayscale(1)";

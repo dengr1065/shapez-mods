@@ -10,6 +10,7 @@ export const SIGNAL_NAME = "dengr1065:colorcoded:buildingsPainted";
 export class HUDColorSelector extends BaseHUDPart {
     createElements(parent) {
         this.element = makeDiv(parent, "ingame_HUD_ColorSelector");
+        let colorCount = 0;
 
         for (const item of Object.values(COLOR_ITEM_SINGLETONS)) {
             const canvas = document.createElement("canvas");
@@ -21,7 +22,11 @@ export class HUDColorSelector extends BaseHUDPart {
 
             const detector = new ClickDetector(canvas, {});
             detector.click.add(this.repaintSelection.bind(this, item));
+            colorCount++;
         }
+
+        const columns = Math.ceil(colorCount / 10);
+        this.element.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     }
 
     initialize() {
@@ -36,7 +41,7 @@ export class HUDColorSelector extends BaseHUDPart {
         const selector = this.root.hud.parts.massSelector;
         const target = enumColorToShortcode[item.color];
 
-        const entities = selector.selectedUids
+        const entities = [...selector.selectedUids]
             .map((uid) => this.root.entityMgr.findByUid(uid))
             .filter((entity) => entity.components.ColorCoded)
             .filter((entity) => entity.components.ColorCoded.color != target);

@@ -1,6 +1,5 @@
 #ingame_HUD_ColorSelector {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 0.3em;
 
     position: absolute;
@@ -9,6 +8,7 @@
     z-index: 200;
     transform: translate(100%, -50%);
     transition: transform 0.3s ease-in;
+    will-change: transform;
 
     background: #0006;
     backdrop-filter: blur(calc(10px * var(--ui-scale)));
