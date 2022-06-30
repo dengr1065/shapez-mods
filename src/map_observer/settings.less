@@ -36,7 +36,7 @@
         cursor: default;
         all: unset;
 
-        &:hover {
+        &:hover:not(::-webkit-color-swatch) {
             filter: brightness(120%);
         }
 
@@ -49,6 +49,10 @@
             border-radius: 0.2em;
             width: 3em;
             height: 1.5em;
+
+            &:hover {
+                outline: 0.05em solid #ffffff40;
+            }
         }
 
         &[type="checkbox"] {

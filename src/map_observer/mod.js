@@ -8,6 +8,7 @@ import info from "./mod.json";
 import { MapObserverSettingsState } from "./settings";
 import settingsCSS from "./settings.less";
 import { internalUpdateZooming } from "./smooth_zoom";
+import icon from "./icon.webp";
 import readme from "./README.md";
 
 const defaultSettings = {
@@ -18,7 +19,9 @@ const defaultSettings = {
     smoothZoomSpeed: 1,
     customizeGrid: false,
     gridBackground: "#1a2b19",
-    gridForeground: "#243d23"
+    gridForeground: "#243d23",
+    overviewChunkBg: "#444856",
+    overviewActiveChunkBg: "#646b7d"
 };
 
 const vanillaThemeMapColors = {};
@@ -103,7 +106,9 @@ class MapObserver extends Mod {
         for (const theme in THEMES) {
             vanillaThemeMapColors[theme] = {
                 background: THEMES[theme].map.background,
-                grid: THEMES[theme].map.grid
+                grid: THEMES[theme].map.grid,
+                emptyChunk: THEMES[theme].map.chunkOverview.empty,
+                filledChunk: THEMES[theme].map.chunkOverview.filled
             };
         }
 
@@ -139,6 +144,10 @@ class MapObserver extends Mod {
             for (const theme in THEMES) {
                 THEMES[theme].map.background = this.settings.gridBackground;
                 THEMES[theme].map.grid = this.settings.gridForeground;
+                THEMES[theme].map.chunkOverview.empty =
+                    this.settings.overviewChunkBg;
+                THEMES[theme].map.chunkOverview.filled =
+                    this.settings.overviewActiveChunkBg;
             }
         } else {
             // Restore vanilla colors
@@ -146,6 +155,8 @@ class MapObserver extends Mod {
                 const vanilla = vanillaThemeMapColors[theme];
                 THEMES[theme].map.background = vanilla.background;
                 THEMES[theme].map.grid = vanilla.grid;
+                THEMES[theme].map.chunkOverview.empty = vanilla.emptyChunk;
+                THEMES[theme].map.chunkOverview.filled = vanilla.filledChunk;
             }
         }
     }
@@ -178,5 +189,6 @@ class MapObserver extends Mod {
     }
 }
 
+info.extra.icon = icon;
 info.extra.readme = readme;
 registerMod(MapObserver, info);

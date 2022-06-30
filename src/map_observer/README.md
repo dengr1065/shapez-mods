@@ -1,6 +1,6 @@
 ## Features
 
--   Customize map grid: Ability to choose grid background and line colors
+-   Customize map colors: Ability to choose background color in both views
 -   Zoom out futher: You can zoom out more before Map Overview turns on
 -   Map Overview toggle: Switch between Regular View and Map Overview
 -   Extend bounds of zooming out in Map Overview (requires config editing)

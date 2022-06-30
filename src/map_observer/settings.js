@@ -43,7 +43,10 @@ export class MapObserverSettingsState extends TextualGameState {
         const smoothZoom = makeCheckboxInput(settings.smoothZoom);
         const customizeGrid = makeCheckboxInput(settings.customizeGrid);
         const backgroundInput = makeColorInput(settings.gridBackground);
-        const foregroundInput = makeColorInput(settings.gridForeground);
+        const overviewChunkBg = makeColorInput(settings.overviewChunkBg);
+        const overviewActiveChunkBg = makeColorInput(
+            settings.overviewActiveChunkBg
+        );
 
         useHotkeys.addEventListener("change", () => {
             settings.useHotkeys = useHotkeys.checked;
@@ -61,8 +64,12 @@ export class MapObserverSettingsState extends TextualGameState {
             settings.gridBackground = backgroundInput.value;
         });
 
-        foregroundInput.addEventListener("change", () => {
-            settings.gridForeground = foregroundInput.value;
+        overviewChunkBg.addEventListener("change", () => {
+            settings.overviewChunkBg = overviewChunkBg.value;
+        });
+
+        overviewActiveChunkBg.addEventListener("change", () => {
+            settings.overviewActiveChunkBg = overviewActiveChunkBg.value;
         });
 
         const content = document.querySelector(".mainContent");
@@ -78,9 +85,12 @@ export class MapObserverSettingsState extends TextualGameState {
 
         content.appendChild(labelWrap("Toggle Mode (Keybinding)", useHotkeys));
         content.appendChild(labelWrap("Alternative Smooth Zoom", smoothZoom));
-        content.appendChild(labelWrap("Customize Grid Colors", customizeGrid));
-        content.appendChild(labelWrap("Background Color", backgroundInput));
-        content.appendChild(labelWrap("Grid Lines", foregroundInput));
+        content.appendChild(labelWrap("Customize Colors", customizeGrid));
+        content.appendChild(labelWrap("Regular Background", backgroundInput));
+        content.appendChild(labelWrap("Overview Background", overviewChunkBg));
+        content.appendChild(
+            labelWrap("Overview Background (Active)", overviewActiveChunkBg)
+        );
     }
 
     getStateHeaderTitle() {
