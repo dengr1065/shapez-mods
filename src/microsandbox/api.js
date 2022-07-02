@@ -2,6 +2,7 @@ import { Row } from "./rows/row";
 import { LabelRow } from "./rows/label_row";
 import { NumberRow } from "./rows/number_row";
 import { ToggleRow } from "./rows/toggle_row";
+import { ButtonRow } from "./rows/button_row";
 import { getModExtrasRows } from "./api/mod_extras";
 import { getPackagingRows, setupPackagingHooks } from "./api/packaging";
 import {
@@ -14,7 +15,8 @@ export const rowClasses = {
     Row,
     LabelRow,
     NumberRow,
-    ToggleRow
+    ToggleRow,
+    ButtonRow
 };
 
 export const integrations = {
