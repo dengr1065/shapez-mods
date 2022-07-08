@@ -1,0 +1,15 @@
+{
+    "entry": "./index.js",
+    "name": "Colored Matrices",
+    "description": "Modify color of buildings in Map Overview.",
+    "version": "1.0.0-beta",
+    "id": "colored_matrices",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "enabled": true,
+        "colors": {}
+    },
+    "extra": {
+        "settingsState": "ColoredMatricesConfigState"
+    }
+}

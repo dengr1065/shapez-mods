@@ -1,0 +1,72 @@
+#state_ColoredMatricesConfigState {
+    .mainContent {
+        display: grid;
+        gap: 0.75em;
+
+        max-width: 40em;
+        margin: 0 auto;
+    }
+
+    label {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        pointer-events: all;
+
+        font-size: 110%;
+        gap: 0.8em;
+        padding: 0.4em 0;
+
+        input[type="checkbox"] {
+            width: 2em;
+            height: 1em;
+        }
+    }
+
+    .header {
+        font-size: 120%;
+    }
+
+    .combinations {
+        display: flex;
+        gap: 0.6em;
+    }
+
+    .combination {
+        display: grid;
+        grid-template-rows: 1fr auto;
+
+        background: rgb(255 255 255 / 0.2);
+        border: 1px solid rgb(255 255 255 / 0.2);
+        border-radius: 0.4em;
+
+        canvas {
+            padding: 0.5em;
+            height: 2.5em;
+        }
+    }
+
+    input[type="color"] {
+        all: unset;
+        display: block;
+        height: 1.2em;
+        margin: -1px;
+        margin-top: 0;
+        pointer-events: all;
+        cursor: pointer;
+
+        box-sizing: border-box;
+        border: 1px solid rgb(255 255 255 / 0.1);
+        border-bottom-left-radius: 0.4em;
+        border-bottom-right-radius: $border-bottom-left-radius;
+        overflow: hidden;
+
+        &::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        &::-webkit-color-swatch {
+            border: 0;
+        }
+    }
+}
