@@ -2,6 +2,7 @@ import { gMetaBuildingRegistry } from "core/global_registries";
 import { Mod } from "mods/mod";
 import { ColoredMatricesConfigState } from "./config";
 import configStyles from "./config.less";
+import { generateModIcon } from "./icon";
 import metadata from "./mod.json";
 import { patchModInterface } from "./mod_interface_patch";
 
@@ -102,6 +103,8 @@ class ColoredMatrices extends Mod {
         }
     }
 }
+
+metadata.extra.icon = generateModIcon();
 
 patchModInterface();
 registerMod(ColoredMatrices, metadata);

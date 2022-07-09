@@ -101,7 +101,20 @@ export class ColoredMatricesConfigState extends TextualGameState {
 
         const picker = document.createElement("input");
         picker.type = "color";
-        picker.value = this.getColor(buildingId, variant, rotationVariant);
+        picker.value = this.getColor(building, variant, rotationVariant);
+
+        this.trackClicks(icon, () => {
+            // Reset to default color
+            const defaultColor = this.getColor(
+                building,
+                variant,
+                rotationVariant,
+                true
+            );
+
+            this.setColor(buildingId, variant, rotationVariant, defaultColor);
+            picker.value = defaultColor;
+        });
 
         picker.addEventListener("change", () => {
             const newColor = picker.value;
@@ -134,14 +147,20 @@ export class ColoredMatricesConfigState extends TextualGameState {
 
     /**
      * Returns current color choice for a building variant combination.
-     * @param {string} buildingId
+     * @param {import("game/meta_building").MetaBuilding} building
      * @param {string} variant
      * @param {number} rotationVariant
+     * @param {boolean} [forceDefault]
      * @returns {string}
      */
-    getColor(buildingId, variant, rotationVariant) {
-        let color =
-            this.mod.settings.colors[buildingId][variant][rotationVariant];
+    getColor(building, variant, rotationVariant, forceDefault = false) {
+        const cmEnabled = this.mod.settings.enabled;
+        if (forceDefault && cmEnabled) {
+            this.mod.settings.enabled = false;
+        }
+
+        let color = building.getSilhouetteColor(variant, rotationVariant);
+        this.mod.settings.enabled = cmEnabled;
 
         if (color.length == 4 && color.startsWith("#")) {
             const red = color[1].repeat(2);
