@@ -30,15 +30,15 @@ function unwrapExtras(metadata) {
     metadata.extra.authors ??= [];
     metadata.extra.source = source;
 
-    // This one isn't perfect, but works in my case
-    if (metadata.id) {
-        metadata.extra.updateURL = updateURL + encodeURIComponent(metadata.id);
-        metadata.id = defaultAuthor + ":" + metadata.id;
-    }
-
     const { authors } = metadata.extra;
     if (authors.length == 0) {
         authors.push(defaultAuthor);
+    }
+
+    // This one isn't perfect, but works in my case
+    if (metadata.id) {
+        metadata.extra.updateURL = updateURL + encodeURIComponent(metadata.id);
+        metadata.id = authors[0] + ":" + metadata.id;
     }
 
     for (let i = 0; i < authors.length; i++) {
