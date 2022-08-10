@@ -1,0 +1,12 @@
+{
+    "entry": "./index.js",
+    "name": "Zeitgeist",
+    "description": "Look into the future, remember the past. Levels, of course.",
+    "version": "1.0.0",
+    "id": "zeitgeist",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "pastLevels": 2,
+        "futureLevels": 2
+    }
+}
