@@ -23,7 +23,12 @@ const config = {
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
             { test: /\.(webp|png|svg|woff2)$/, type: "asset/inline" },
-            { test: /\.md$/, use: ["html-loader", "markdown-loader"] }
+            { test: /\.md$/, use: ["html-loader", "markdown-loader"] },
+            {
+                test: /\.ts$/,
+                use: ["ts-loader"],
+                exclude: /node_modules/
+            }
         ]
     },
     optimization: {
@@ -33,6 +38,9 @@ const config = {
                 extractComments: false
             })
         ]
+    },
+    resolve: {
+        extensions: [".js", ".ts"]
     },
     plugins: [
         new BannerPlugin(({ chunk }) => getBanner(modsMetadata[chunk.name])),
