@@ -61,15 +61,25 @@ try {
         `import\\s{([\\w\\d\\s,]*?)}\\sfrom\\s"(${modules})";`,
         "gms"
     );
-    config.module.rules.push({
-        test: /\.js$/,
+
+    // Used for JS and TS->JS
+    const shapezLoader = {
         loader: "string-replace-loader",
         options: {
             search: regex,
             replace: (_, imports) => `const {${imports}} = shapez;`
-        },
-        exclude: /node_modules/
+        }
+    };
+
+    // New rule for JS
+    config.module.rules.push({
+        test: /\.js$/,
+        exclude: /node_modules/,
+        ...shapezLoader
     });
+
+    // Second loader for TS->JS
+    config.module.rules[5].use.unshift(shapezLoader);
 } catch {
     console.warn("Failed to find types.d.ts, imports won't be mapped.");
 }
