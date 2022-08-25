@@ -50,6 +50,7 @@ export class HUDMicroSandbox extends BaseHUDPart {
     }
 
     initialize() {
+        this.visible = false;
         this.domAttach = new DynamicDomAttach(this.root, this.element);
         this.freeBlueprints = false;
         this.unlockRewards = false;
