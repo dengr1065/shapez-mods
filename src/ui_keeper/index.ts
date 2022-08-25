@@ -1,0 +1,46 @@
+import { GameRoot } from "game/root";
+import { Mod } from "mods/mod";
+import { SerializedGame } from "savegame/savegame_typedefs";
+import { blocklist, getVisibility, setVisibility } from "./manager";
+import metadata from "./mod.json";
+import changelog from "./changelog.json";
+import readme from "./README.md";
+import icon from "./icon.webp";
+
+class UIKeeper extends Mod {
+    init() {
+        if ("blocklist" in this.settings) {
+            blocklist.push(...this.settings.blocklist);
+        }
+
+        this.signals.gameSerialized.add(this.onGameSerialized.bind(this));
+        this.signals.gameDeserialized.add(this.onGameDeserialized.bind(this));
+    }
+
+    onGameSerialized(root: GameRoot, dump: SerializedGame) {
+        // Keep missing stuff there, in case of mod list change
+        dump.modExtraData[metadata.id] ??= {};
+
+        // Merge the visibility states
+        dump.modExtraData[metadata.id] = {
+            ...dump.modExtraData[metadata.id],
+            ...getVisibility(root)
+        };
+    }
+
+    onGameDeserialized(root: GameRoot, dump: SerializedGame) {
+        if (!(metadata.id in dump.modExtraData)) {
+            // Nothing to restore
+            return;
+        }
+
+        setVisibility(root, dump.modExtraData[metadata.id]);
+    }
+}
+
+const extra = (<ModExtrasMetadata>(<unknown>metadata)).extra;
+extra.changelog = changelog;
+extra.readme = readme;
+extra.icon = icon;
+
+registerMod(UIKeeper, metadata as unknown as ModExtrasMetadata);

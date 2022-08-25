@@ -1,0 +1,11 @@
+{
+    "entry": "./index.ts",
+    "name": "UI Keeper",
+    "description": "Remembers the state of UI visibility and restores it when loading a savegame.",
+    "version": "1.0.0",
+    "id": "ui_keeper",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "blocklist": []
+    }
+}
