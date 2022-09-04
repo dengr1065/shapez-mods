@@ -4,6 +4,7 @@ import metadata from "./mod.json";
 import styles from "./fixes.less";
 import {
     deserialize,
+    isIndustriesPresent,
     isShapePinned,
     pinNewShape,
     postRerenderFull,
@@ -21,6 +22,9 @@ import {
 import { enumSubShape, ShapeDefinition } from "game/shape_definition";
 import { enumColors } from "game/colors";
 import { createLogger } from "core/logging";
+import { keyToKeyCode } from "game/key_action_mapper";
+import changelog from "./changelog.json";
+import icon from "./icon.webp";
 
 /**
  * This allows other mods to register predefined shape handlers,
@@ -101,8 +105,12 @@ function postCreateMenuElements() {
     const button = makeDivElement(null, ["button", "pin"]);
     this.trackClicks(button, pinNewCustomShape);
 
-    // Insert our pin button before the save button
-    this.element.insertBefore(button, this.saveButton);
+    if (isIndustriesPresent()) {
+        // Move the buttons more (yes, this sucks)
+        this.element.classList.add("si");
+    }
+
+    this.element.appendChild(button);
 }
 
 /**
@@ -137,7 +145,21 @@ function getDefaultItems(root) {
 class CustomPins extends Mod {
     init() {
         logger.log("Init phase!");
-        this.modInterface.registerCss(styles);
+
+        this.modInterface.registerIngameKeybinding({
+            id: `${metadata.id}:pin_shape`,
+            translation: "Pin a Shape",
+            keyCode: keyToKeyCode("J"),
+            handler: (/** @type {import("game/root").GameRoot} */ root) => {
+                const menu = root.hud.parts.gameMenu;
+                if (menu === undefined) {
+                    // Custom game mode without menu
+                    return;
+                }
+
+                pinNewCustomShape.call(menu);
+            }
+        });
 
         // HUD Stuff
         this.modInterface.runAfterMethod(
@@ -146,11 +168,8 @@ class CustomPins extends Mod {
             postCreatePinnedShapesElements
         );
 
-        this.modInterface.runAfterMethod(
-            HUDGameMenu,
-            "createElements",
-            postCreateMenuElements
-        );
+        // Needs to run late because sense moment
+        this.signals.appBooted.add(this.patchGameMenu, this);
 
         // (De-)serializing
         this.modInterface.replaceMethod(
@@ -194,10 +213,21 @@ class CustomPins extends Mod {
         logger.log("Patched HUDPinnedShapes and HUDGameMenu.");
     }
 
+    patchGameMenu() {
+        this.modInterface.registerCss(styles);
+        this.modInterface.runAfterMethod(
+            HUDGameMenu,
+            "createElements",
+            postCreateMenuElements
+        );
+    }
+
     addProvider(handler) {
         logger.log("Registered a predefined shape handler.");
         predefinedShapeHandlers.push(handler);
     }
 }
 
+metadata.extra.changelog = changelog;
+metadata.extra.icon = icon;
 registerMod(CustomPins, metadata);

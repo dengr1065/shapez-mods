@@ -1,4 +1,5 @@
 import { arrayDeleteValue } from "core/utils";
+import { MODS } from "mods/modloader";
 
 /**
  * Write custom pinned shapes to the savegame object.
@@ -99,4 +100,8 @@ export function unpinShape(srcMethod, [key]) {
 
 function isValidCustomPin(pin) {
     return typeof pin.key == "string" && typeof pin.throughput == "boolean";
+}
+
+export function isIndustriesPresent() {
+    return MODS.mods.some((mod) => mod.metadata.id === "shapez-industries");
 }
