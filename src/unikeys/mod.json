@@ -1,0 +1,11 @@
+{
+    "entry": "./index.ts",
+    "name": "UniKeys",
+    "description": "Set keybindings for buildings from mods that don't support them.",
+    "version": "1.0.0",
+    "id": "unikeys",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "excludedBuildings": []
+    }
+}
