@@ -1,7 +1,9 @@
 import { makeOffscreenBuffer } from "core/buffer_utils";
 import { gMetaBuildingRegistry } from "core/global_registries";
+import { Loader } from "core/loader";
 import { TextualGameState } from "core/textual_game_state";
 import { makeDiv, makeDivElement } from "core/utils";
+import { MetaHubBuilding } from "game/buildings/hub";
 import { defaultBuildingVariant } from "game/meta_building";
 import { MODS } from "mods/modloader";
 import { T } from "translations";
@@ -138,6 +140,10 @@ export class ColoredMatricesConfigState extends TextualGameState {
 
         if (sprite === null) {
             sprite = building.getBlueprintSprite(rotationVariant, variant);
+        }
+
+        if (building instanceof MetaHubBuilding) {
+            sprite = Loader.getSprite("sprites/buildings/hub.png");
         }
 
         if (sprite) {

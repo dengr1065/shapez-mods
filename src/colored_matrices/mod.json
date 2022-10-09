@@ -12,6 +12,7 @@
     "extra": {
         "settingsState": "ColoredMatricesConfigState",
         "changelog": {
+            "1.1.1": ["HUB now displays in the configuration"],
             "1.1.0": ["Ability to reset colors to vanilla values"],
             "1.0.0-beta": ["Initial release"]
         }
