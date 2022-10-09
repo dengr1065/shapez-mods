@@ -34,10 +34,11 @@ function resolveEntries() {
         return entries;
     }
 
-    for (const mod in buildOnly) {
+    for (const mod of buildOnly) {
         // BUILD_ONLY allows resolving only explicitly specified mods
         if (!(mod in entries)) {
-            console.warn('Asked to build "%s" but it wasn\'t found!');
+            console.warn('Asked to build "%s" but it wasn\'t found!', mod);
+            console.log("These mods were found:", entries);
         }
     }
 
