@@ -3,7 +3,6 @@
         "target": "ES2021",
         "module": "ES6",
         "moduleResolution": "node",
-        "rootDir": "./src",
         "outDir": "./build",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
@@ -11,6 +10,12 @@
         "resolveJsonModule": true,
         "allowJs": true
     },
-    "include": ["./src/**/*.js", "./types.d.ts", "./src/**/*.ts"],
+    "include": [
+        "./src/**/*.js",
+        "./types.d.ts",
+        "./src/**/*.ts",
+        "./lib/**/*.js",
+        "./lib/**/*.ts"
+    ],
     "exclude": ["./node_modules", "./build/**/*.mod.js", "./tools/*.js"]
 }
