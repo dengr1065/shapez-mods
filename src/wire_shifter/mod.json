@@ -1,0 +1,8 @@
+{
+    "entry": "./mod.ts",
+    "name": "Wire Shifter",
+    "description": "Modify color of all wires in the selected area.",
+    "version": "1.0.0",
+    "id": "wire_shifter",
+    "doesNotAffectSavegame": true
+}
