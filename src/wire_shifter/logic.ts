@@ -43,7 +43,13 @@ function getNextVariantFor(
     const allVariants = metaBuilding.getAvailableVariants(root);
     const current = staticComp.getVariant();
 
-    return allVariants[(allVariants.indexOf(current) + 1) % allVariants.length];
+    // When holding reverse rotation key (usually SHIFT), use previous one
+    const reverseKey = root.keyMapper.getBindingById("rotateInverseModifier");
+    const direction = reverseKey.pressed ? -1 : 1;
+
+    return allVariants.at(
+        (allVariants.indexOf(current) + direction) % allVariants.length
+    );
 }
 
 /**
