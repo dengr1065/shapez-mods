@@ -2,7 +2,7 @@
 
 **UI Keeper** is a mod that saves your time when opening your savegame. It keeps
 the visibility state of many HUD elements for each savegame and restores it
-accordingly.
+accordingly. Since 1.1.0, active layer is also preserved.
 
 This mod can be safely added to older savegames and is completely safe to
 remove.
