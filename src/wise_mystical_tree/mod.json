@@ -1,0 +1,12 @@
+{
+    "entry": "./mod.ts",
+    "name": "Wise Mystical Tree",
+    "description": "If you're over 25 and own shapez, this mod is a must-have!",
+    "version": "1.0.0",
+    "id": "wise_mystical_tree",
+    "extra": {
+        "requires": {
+            "plantz": "^1.0.0"
+        }
+    }
+}
