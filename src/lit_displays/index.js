@@ -17,6 +17,7 @@ export class LitDisplays extends Mod {
         this.context = context;
 
         this.renderOnWiresLayer = true;
+        this.renderShapes = true;
 
         this.signals.appBooted.add(this.setDrawHook, this);
     }
@@ -38,7 +39,16 @@ export class LitDisplays extends Mod {
             enable: () => (this.renderOnWiresLayer = false),
             disable: () => (this.renderOnWiresLayer = true)
         };
-        return [renderOnWiresLayerFix];
+
+        /** @type {Fix} */
+        const renderShapesFix = {
+            id: this.metadata.id + ":render_shapes_as_white",
+            name: "Render shapes as white color",
+            enable: () => (this.renderShapes = false),
+            disable: () => (this.renderShapes = true)
+        };
+
+        return [renderOnWiresLayerFix, renderShapesFix];
     }
 }
 

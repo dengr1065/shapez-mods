@@ -2,7 +2,7 @@
     "entry": "./index.js",
     "name": "Lit Displays",
     "description": "What if you could see lit displays on the map view? Well, now you can!",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "id": "lit_displays",
     "doesNotAffectSavegame": true,
     "extra": {
