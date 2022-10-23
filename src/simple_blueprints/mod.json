@@ -1,0 +1,11 @@
+{
+    "entry": "./mod.ts",
+    "name": "Simple Blueprints",
+    "description": "Makes blueprints use simplified/matrix building representations while Map Overview is active.",
+    "version": "0.1.0",
+    "id": "simple_blueprints",
+    "doesNotAffectSavegame": true,
+    "settings": {
+        "blueprintColor": "rgb(74, 163, 223)"
+    }
+}
