@@ -168,6 +168,11 @@ export class ColoredMatricesConfigState extends TextualGameState {
         let color = building.getSilhouetteColor(variant, rotationVariant);
         this.mod.settings.enabled = cmEnabled;
 
+        if (color == null) {
+            // Workaround for buildings with missing colors
+            return "#000000";
+        }
+
         if (color.length == 4 && color.startsWith("#")) {
             const red = color[1].repeat(2);
             const green = color[2].repeat(2);
