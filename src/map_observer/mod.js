@@ -59,7 +59,8 @@ class MapObserver extends Mod {
             "internalUpdateZooming",
             function (srcMethod, [now, dt]) {
                 if (!mod.settings.smoothZoom) {
-                    return srcMethod(now, dt);
+                    srcMethod(now, dt);
+                    return;
                 }
 
                 internalUpdateZooming.call(

@@ -108,10 +108,11 @@ class Throwback extends Mod {
 
             // Notify the user
             this.logger.log("No point recorded");
-            return notificationsHud.internalShowNotification(
+            notificationsHud.internalShowNotification(
                 T[metadata.id].missing,
                 "error"
             );
+            return;
         }
 
         if (this.last.center.equalsEpsilon(root.camera.center)) {

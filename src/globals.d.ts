@@ -2,9 +2,10 @@ import { Mod } from "mods/mod";
 import { ModMetadata } from "mods/modloader";
 
 declare global {
+    const shapez = {};
     function registerMod(constructor: typeof Mod, metadata: ModMetadata);
 
-    declare interface TypedSignal<T extends any[]> {
+    declare interface TypedSignal<T extends unknown[]> {
         add(
             receiver: (...args: T) => "STOP_PROPAGATION" | void,
             scope?: object
@@ -53,5 +54,11 @@ declare global {
     declare module "*.md" {
         const content: string;
         export default content;
+    }
+}
+
+declare module "core/config" {
+    export namespace globalConfig {
+        export const tileSize: 32;
     }
 }

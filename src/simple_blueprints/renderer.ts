@@ -5,7 +5,7 @@ import { Blueprint } from "game/blueprint";
 import { MetaBuilding } from "game/meta_building";
 import metadata from "./mod.json";
 
-const PIXEL_SIZE = globalConfig["tileSize"] / 3;
+const PIXEL_SIZE = globalConfig.tileSize / 3;
 
 function drawMatrix(
     { context }: DrawParameters,
@@ -71,8 +71,8 @@ export function drawBlueprint(
             parameters.context.fillRect(
                 worldTile.x,
                 worldTile.y,
-                globalConfig["tileSize"] * size.x,
-                globalConfig["tileSize"] * size.y
+                globalConfig.tileSize * size.x,
+                globalConfig.tileSize * size.y
             );
         }
     }

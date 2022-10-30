@@ -53,7 +53,7 @@ class ColoredMatrices extends Mod {
     }
 
     patchBuildings() {
-        const thisRef = this;
+        const mod = this;
 
         // Update colors before patching to avoid useless wrapping
         this.updateColors();
@@ -68,7 +68,7 @@ class ColoredMatrices extends Mod {
                 metaClass,
                 "getSilhouetteColor",
                 function (...args) {
-                    return methodPatch.call(this, thisRef, buildingId, ...args);
+                    return methodPatch.call(this, mod, buildingId, ...args);
                 }
             );
         }

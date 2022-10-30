@@ -12,7 +12,8 @@ export function drawPatch(
     [parameters]: [DrawParameters]
 ) {
     if (!this.root.camera.getIsMapOverlayActive()) {
-        return srcMethod(parameters);
+        srcMethod(parameters);
+        return;
     }
 
     const blueprint = this.currentBlueprint.get();
