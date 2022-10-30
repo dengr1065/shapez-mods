@@ -34,8 +34,10 @@ export function drawBlueprint(
     tile: Vector
 ) {
     // FIXME: refactor to use getMod
-    parameters.context.fillStyle =
-        window["shapez"]["THEME"][metadata.id]["blueprintColor"];
+    const blueprintColor = shapez["THEME"][metadata.id]["blueprintColor"];
+    parameters.context.fillStyle = blueprintColor;
+
+    const placeableAlpha = blueprintColor == null ? 0.8 : 1;
 
     for (const entity of blueprint.entities) {
         const staticComp = entity.components.StaticMapEntity;
@@ -51,7 +53,15 @@ export function drawBlueprint(
         const canPlace = parameters.root.logic.checkCanPlaceEntity(entity, {
             offset: tile
         });
-        parameters.context.globalAlpha = canPlace ? 1 : 0.3;
+        parameters.context.globalAlpha = canPlace ? placeableAlpha : 0.3;
+
+        if (blueprintColor === null) {
+            // Use the regular map overview color
+            parameters.context.fillStyle = metaBuilding.getSilhouetteColor(
+                variant,
+                rotationVariant
+            );
+        }
 
         const matrix = metaBuilding.getSpecialOverlayRenderMatrix(
             staticComp.rotation,
