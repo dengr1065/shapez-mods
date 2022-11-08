@@ -19,7 +19,11 @@ const config = {
     },
     module: {
         rules: [
-            { test: /mod\.json$/, use: ["./tools/extras_loader"] },
+            {
+                test: /mod\.json$/,
+                use: ["./tools/extras_loader"],
+                type: "asset/source"
+            },
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },
             { test: /\.(webp|png|svg|woff2)$/, type: "asset/inline" },

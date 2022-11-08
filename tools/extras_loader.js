@@ -6,6 +6,7 @@ const { unwrapExtras } = require("./mod_utils");
 module.exports = (json) => {
     const metadata = JSON.parse(json);
     unwrapExtras(metadata);
+    delete metadata.entry;
 
     return JSON.stringify(metadata);
 };
