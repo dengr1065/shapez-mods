@@ -1,11 +1,12 @@
-import { basicSetup, EditorState, EditorView } from "@codemirror/basic-setup";
-import { StreamLanguage } from "@codemirror/stream-parser";
+import { StreamLanguage } from "@codemirror/language";
 import { less } from "@codemirror/legacy-modes/mode/css";
+import { EditorState } from "@codemirror/state";
+import { basicSetup, EditorView } from "codemirror";
+import { InputReceiver } from "core/input_receiver";
 import { makeButton, makeDiv } from "core/utils";
 import { BaseHUDPart } from "game/hud/base_hud_part";
 import { DynamicDomAttach } from "game/hud/dynamic_dom_attach";
 import { compileLess, setCss } from "./css";
-import { InputReceiver } from "core/input_receiver";
 
 export class HUDCustomCSSEditor extends BaseHUDPart {
     constructor(root, mod) {

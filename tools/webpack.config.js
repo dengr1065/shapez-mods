@@ -21,8 +21,7 @@ const config = {
         rules: [
             {
                 test: /mod\.json$/,
-                use: ["./tools/extras_loader"],
-                type: "asset/source"
+                use: ["./tools/extras_loader"]
             },
             { test: /\.less$/, use: [...cssLoaders, "less-loader"] },
             { test: /\.css$/, use: cssLoaders },

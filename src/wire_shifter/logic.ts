@@ -11,7 +11,7 @@ function getMassSelector(root: GameRoot) {
         return null;
     }
 
-    const massSelector: HUDMassSelector = root.hud.parts["massSelector"];
+    const massSelector = root.hud.parts["massSelector"] as HUDMassSelector;
     return massSelector;
 }
 

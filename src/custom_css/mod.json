@@ -2,7 +2,7 @@
     "entry": "./mod.js",
     "name": "Custom CSS/LESS",
     "description": "Customize the UI with CSS/LESS using a built-in code editor.",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "id": "custom_css",
     "minimumGameVersion": ">=1.5.0",
     "doesNotAffectSavegame": true,
