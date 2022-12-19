@@ -34,8 +34,16 @@
             // plus/minus one buttons
             grid-template-columns: 1fr auto auto;
 
+            &.editable {
+                grid-template-columns: 1fr repeat(3, auto);
+            }
+
             &.additional {
                 grid-template-columns: 1fr repeat(4, auto);
+            }
+
+            &.additional.editable {
+                grid-template-columns: 1fr repeat(5, auto);
             }
         }
 
@@ -47,10 +55,10 @@
             margin: 0;
 
             background-position: 50%;
-            background-size: 1.3em;
+            background-size: 1.2em;
             background-repeat: no-repeat;
 
-            @icons: minus, plus, min, max;
+            @icons: minus, plus, min, max, edit;
             each(@icons, {
                 &.@{value} {
                     background-image: url("./assets/@{value}.svg");

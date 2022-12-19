@@ -1,4 +1,10 @@
 {
+    "1.7.0": [
+        "Ability to set level to exact value",
+        "Underlying API improvements",
+        "Fixed row color inconsistency between game sessions",
+        "Modified default colors"
+    ],
     "1.6.1": ["Support for UI Keeper"],
     "1.6.0": ["Built-in button row for add-ons to use"],
     "1.5.4": ["New design for shapez 1.5.2+"],

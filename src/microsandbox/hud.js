@@ -9,15 +9,6 @@ import { integrations } from "./api";
 import { LabelRow } from "./rows/label_row";
 import { NumberRow } from "./rows/number_row";
 
-const rowColors = [
-    "#ea17c0",
-    "#c92c2c",
-    "#2c6bc9",
-    "#2daf2f",
-    "#8e34b5",
-    "#ea9310"
-];
-
 const upgradeShortNames = {
     belt: "Transport",
     miner: "Extraction",
@@ -26,6 +17,15 @@ const upgradeShortNames = {
 };
 
 export class HUDMicroSandbox extends BaseHUDPart {
+    rowColors = [
+        "#474880",
+        "#9c3d36",
+        "#a38d34",
+        "#338f3a",
+        "#345da3",
+        "#a33490"
+    ];
+
     constructor(root) {
         super(root);
 
@@ -43,7 +43,8 @@ export class HUDMicroSandbox extends BaseHUDPart {
                 label: "Level",
                 getter: () => this.root.hubGoals.level,
                 setter: (value) => this.setLevel(value),
-                min: 1
+                min: 1,
+                valueEditing: true
             }),
             ...this.createUpgradeRows()
         ];
@@ -66,9 +67,9 @@ export class HUDMicroSandbox extends BaseHUDPart {
                 continue;
             }
 
-            const color = rowColors.shift();
+            const color = this.rowColors.shift();
             row.setColor(color);
-            rowColors.push(color);
+            this.rowColors.push(color);
         }
     }
 
