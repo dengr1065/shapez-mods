@@ -1,9 +1,13 @@
 import { makeOffscreenBuffer } from "core/buffer_utils";
 import { globalConfig } from "core/config";
 import { Mod } from "mods/mod";
+import { MODS } from "mods/modloader";
 import { renderDisplays } from "./display";
-import info from "./mod.json";
 import icon from "./icon.webp";
+import info from "./mod.json";
+
+// Overview Hook is bundled with Lit Displays
+import "../overview_hook/mod";
 
 export class LitDisplays extends Mod {
     init() {
@@ -23,11 +27,9 @@ export class LitDisplays extends Mod {
     }
 
     setDrawHook() {
-        const overviewHook = ModExtras.require(
-            "dengr1065:overview_hook",
-            "^1.0.0"
+        const overviewHook = MODS.mods.find(
+            (m) => m.metadata.id === "dengr1065:overview_hook"
         );
-
         overviewHook.hook(this, renderDisplays.bind(this));
     }
 

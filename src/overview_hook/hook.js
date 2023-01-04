@@ -1,11 +1,12 @@
 import { globalConfig } from "core/config";
+import { MODS } from "mods/modloader";
 
 /**
  * Returns instance of the Overview Hook mod.
  * @returns {import("./mod").OverviewHook}
  */
 function getMod() {
-    return ModExtras.require("dengr1065:overview_hook");
+    return MODS.mods.find((m) => m.metadata.id === "dengr1065:overview_hook");
 }
 
 /**
@@ -31,10 +32,6 @@ function callHook(callback, aggregate, chunk, parameters) {
  * @this {import("game/map_chunk_aggregate").MapChunkAggregate}
  */
 export function drawOverlayHook(hooks, parameters) {
-    if (ModExtras?.version === undefined) {
-        return;
-    }
-
     // Offset of this chunk aggregate (chunk coordinates)
     const chunkOffsetX = this.x * globalConfig.chunkAggregateSize;
     const chunkOffsetY = this.y * globalConfig.chunkAggregateSize;

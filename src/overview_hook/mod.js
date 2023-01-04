@@ -2,27 +2,15 @@ import { createLogger } from "core/logging";
 import { MapChunkAggregate } from "game/map_chunk_aggregate";
 import { Mod } from "mods/mod";
 import { drawOverlayHook } from "./hook";
-import metadata from "./mod.json";
+import metadata from "./bundled.mod.json";
 import icon from "./icon.webp";
 
 const logger = createLogger("Overview Hook");
-const modExtrasWarning = [
-    "Mod Extras is not installed or is outdated.",
-    "Overview Hook requires Mod Extras 0.3.0 or newer",
-    "to function."
-].join(" ");
 
 export class OverviewHook extends Mod {
     logger = logger;
 
     init() {
-        this.modExtrasMissing = ModExtras?.version === undefined;
-        this.signals.gameStarted.add(this.showModExtrasWarning, this);
-
-        if (this.modExtrasMissing) {
-            logger.error("Mod Extras is missing!");
-        }
-
         /** @type {{ mod: Mod, callback: OverviewHookCallback }[]} */
         this.hooks = [];
 
@@ -36,20 +24,17 @@ export class OverviewHook extends Mod {
         );
     }
 
-    showModExtrasWarning() {
-        if (this.modExtrasMissing) {
-            this.dialogs.showWarning("Overview Hook", modExtrasWarning);
-        }
-    }
-
     /**
      * Sets a Map Overview rendering hook.
      * @param {Mod} mod Used to keep track of hooked mods.
      * @param {OverviewHookCallback} callback Function to call when rendering.
      */
     hook(mod, callback) {
-        ModExtras.assertIsOfType(mod, Mod);
-        ModExtras.assertIsOfType(callback, Function);
+        if (!(mod instanceof Mod)) {
+            throw new Error('Cannot hook: invalid "mod" argument provided');
+        } else if (typeof callback !== "function") {
+            throw new Error('Cannot hook: "callback" is not a function');
+        }
 
         if (this.hooks.some(({ callback: cb }) => cb == callback)) {
             logger.warn("Hooking the same callback twice");
@@ -65,11 +50,15 @@ export class OverviewHook extends Mod {
      * @param {OverviewHookCallback} callback Specific hook to remove.
      */
     unhook(mod, callback) {
-        ModExtras.assertIsOfType(mod, Mod);
+        if (!(mod instanceof Mod)) {
+            throw new Error('Cannot unhook: invalid "mod" argument provided');
+        }
 
         let modHooks = this.hooks.filter((hook) => hook.mod == mod);
         if (callback) {
-            ModExtras.assertIsOfType(callback, Function);
+            if (typeof callback !== "function") {
+                throw new Error('Cannot unhook: "callback" is not a function');
+            }
             modHooks = modHooks.filter((hook) => hook.callback == callback);
         }
 
