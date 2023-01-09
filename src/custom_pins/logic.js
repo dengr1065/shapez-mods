@@ -1,5 +1,6 @@
 import { arrayDeleteValue } from "core/utils";
 import { MODS } from "mods/modloader";
+import { ShapeDefinition } from "game/shape_definition";
 
 /**
  * Write custom pinned shapes to the savegame object.
@@ -65,7 +66,7 @@ export function postRerenderFull() {
  * @this {import("game/hud/parts/pinned_shapes").HUDPinnedShapes}
  */
 export function pinNewShape(_, args) {
-    const key = args[0].getHash();
+    const key = args[0] instanceof ShapeDefinition ? args[0].getHash() : args[0].getAsCopyableKey();
     if (this.isShapePinned(key)) {
         return;
     }
@@ -104,4 +105,8 @@ function isValidCustomPin(pin) {
 
 export function isIndustriesPresent() {
     return MODS.mods.some((mod) => mod.metadata.id === "shapez-industries");
+}
+
+export function isUniversalItemsPresent() {
+    return MODS.mods.some((mod) => mod.metadata.id === "emanresu:universal-items");
 }
