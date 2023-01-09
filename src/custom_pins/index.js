@@ -9,7 +9,8 @@ import {
     pinNewShape,
     postRerenderFull,
     serialize,
-    unpinShape
+    unpinShape,
+    isUniversalItemsPresent
 } from "./logic";
 import { HUDGameMenu } from "game/hud/parts/game_menu";
 import { makeDivElement } from "core/utils";
@@ -47,7 +48,7 @@ function pinNewCustomShape() {
         id: "customShapeKey",
         label: "Or enter short key of the shape you want to pin:",
         placeholder: "",
-        validator: ShapeDefinition.isValidShortKey
+        validator: isUniversalItemsPresent() ? this.root.parseShortCode : ShapeDefinition.isValidShortKey
     });
 
     const useThroughput = new FormElementCheckbox({
@@ -64,12 +65,12 @@ function pinNewCustomShape() {
         buttons: ["cancel:bad:escape", "ok:good:enter"],
         closeButton: false
     });
-
-    const closeHandler = (shape) => {
+    // Note: If Universal Items is installed, pinNewShape can take either a definition or an item, and so can this.
+    const closeHandler = (item) => {
         const throughput = useThroughput.getValue();
 
         this.root.hud.signals.shapePinRequested.dispatch(
-            shape, // definition to pin
+            item, // definition to pin
             true, // pin as a custom shape
             throughput // display throughput
         );
@@ -87,7 +88,8 @@ function pinNewCustomShape() {
         const key = keyInput.getValue();
 
         const definitionMgr = this.root.shapeDefinitionMgr;
-        closeHandler(definitionMgr.getShapeFromShortKey(key));
+        const resolved = isUniversalItemsPresent() ? this.root.parseShortCode(key) :  definitionMgr.getShapeFromShortKey(key)
+        closeHandler(resolved);
     });
 
     this.root.hud.parts.dialogs.internalShowDialog(dialog);
