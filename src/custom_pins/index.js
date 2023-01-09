@@ -35,6 +35,36 @@ const predefinedShapeHandlers = [];
 const logger = createLogger("CustomPins");
 
 /**
+ * Gets the correct method to validate a short key depending on the installed
+ * mods.
+ * @param {import("game/root").GameRoot} root
+ * @returns {(key: string) => boolean}
+ */
+function getShortKeyValidator(root) {
+    if (isUniversalItemsPresent()) {
+        return root.parseShortCode;
+    }
+
+    return ShapeDefinition.isValidShortKey;
+}
+
+/**
+ * Resolves a short key using the correct method depending on the installed
+ * mods.
+ * @param {import("game/root").GameRoot} root
+ * @param {string} key
+ * @returns {import("game/shape_definition").ShapeDefinition | import("game/base_item").BaseItem}
+ */
+function resolveShortKey(root, key) {
+    if (isUniversalItemsPresent()) {
+        // FIXME: Untyped method
+        return root.parseShortCode(key);
+    }
+
+    return root.shapeDefinitionMgr.getShapeFromShortKey(key);
+}
+
+/**
  * Launches a shape chooser form to select a shape to pin.
  * @this {HUDGameMenu}
  */
@@ -48,7 +78,7 @@ function pinNewCustomShape() {
         id: "customShapeKey",
         label: "Or enter short key of the shape you want to pin:",
         placeholder: "",
-        validator: isUniversalItemsPresent() ? this.root.parseShortCode : ShapeDefinition.isValidShortKey
+        validator: getShortKeyValidator(this.root)
     });
 
     const useThroughput = new FormElementCheckbox({
@@ -65,7 +95,9 @@ function pinNewCustomShape() {
         buttons: ["cancel:bad:escape", "ok:good:enter"],
         closeButton: false
     });
-    // Note: If Universal Items is installed, pinNewShape can take either a definition or an item, and so can this.
+
+    // Note: If Universal Items is installed, pinNewShape can take either a definition
+    // or an item, and so can this.
     const closeHandler = (item) => {
         const throughput = useThroughput.getValue();
 
@@ -86,9 +118,8 @@ function pinNewCustomShape() {
 
     dialog.buttonSignals.ok.add(() => {
         const key = keyInput.getValue();
+        const resolved = resolveShortKey(this.root, key);
 
-        const definitionMgr = this.root.shapeDefinitionMgr;
-        const resolved = isUniversalItemsPresent() ? this.root.parseShortCode(key) :  definitionMgr.getShapeFromShortKey(key)
         closeHandler(resolved);
     });
 

@@ -62,11 +62,19 @@ export function postRerenderFull() {
 }
 
 /**
- * @param {[import("game/shape_definition").ShapeDefinition, boolean?, boolean?]} args
+ * @param {[
+ *     import("game/shape_definition").ShapeDefinition | import("game/base_item").BaseItem,
+ *     boolean?,
+ *     boolean?
+ * ]} args
  * @this {import("game/hud/parts/pinned_shapes").HUDPinnedShapes}
  */
 export function pinNewShape(_, args) {
-    const key = args[0] instanceof ShapeDefinition ? args[0].getHash() : args[0].getAsCopyableKey();
+    // If Universal Items is installed, first argument is a BaseItem
+    const key =
+        args[0] instanceof ShapeDefinition
+            ? args[0].getHash()
+            : args[0].getAsCopyableKey();
     if (this.isShapePinned(key)) {
         return;
     }
@@ -108,5 +116,8 @@ export function isIndustriesPresent() {
 }
 
 export function isUniversalItemsPresent() {
-    return MODS.mods.some((mod) => mod.metadata.id === "emanresu:universal-items");
+    // TODO: Split this into environment-wide "known mods" store, like authors
+    return MODS.mods.some(
+        (mod) => mod.metadata.id === "emanresu:universal-items"
+    );
 }
