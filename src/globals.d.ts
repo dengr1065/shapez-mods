@@ -6,17 +6,11 @@ declare global {
     function registerMod(constructor: typeof Mod, metadata: ModMetadata);
 
     declare interface TypedSignal<T extends unknown[]> {
-        add(
-            receiver: (...args: T) => "STOP_PROPAGATION" | void,
-            scope?: object
-        );
-        addToTop(
-            receiver: (...args: T) => "STOP_PROPAGATION" | void,
-            scope?: object
-        );
-        remove(receiver: (...args: T) => "STOP_PROPAGATION" | void);
+        add(receiver: (...args: T) => string | void, scope?: object);
+        addToTop(receiver: (...args: T) => string | void, scope?: object);
+        remove(receiver: (...args: T) => string | void);
 
-        dispatch(...args: T): "STOP_PROPAGATION" | void;
+        dispatch(...args: T): string | void;
 
         removeAll();
     }
