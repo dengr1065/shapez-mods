@@ -1,0 +1,7 @@
+{
+    "entry": "./index.ts",
+    "name": "Node Spammer",
+    "description": "Because an empty map is boring.",
+    "version": "1.0.0",
+    "id": "node_spammer"
+}
