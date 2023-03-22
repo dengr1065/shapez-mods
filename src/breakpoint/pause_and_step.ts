@@ -7,7 +7,7 @@ interface PauseAndStep extends Mod {
 
 const PAUSE_AND_STEP = "pause-and-step";
 
-export function getPauseAndStep(): PauseAndStep | null {
+export function getPauseAndStep(): PauseAndStep | undefined {
     return MODS.mods.find(
         (mod) => mod.metadata.id === PAUSE_AND_STEP
     ) as PauseAndStep;

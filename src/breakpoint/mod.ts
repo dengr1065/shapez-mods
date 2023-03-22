@@ -39,7 +39,7 @@ export class Breakpoint extends Mod {
     }
 
     addToToolbar() {
-        if (getPauseAndStep() === null) {
+        if (getPauseAndStep() === undefined) {
             this.logger.error("Pause and Step is not installed!");
             this.dialogs.showWarning(
                 "Missing Dependency",

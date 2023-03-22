@@ -2,7 +2,7 @@
     "entry": "./index.ts",
     "name": "Hub Nuke",
     "description": "Adds a keybinding to nuke everything in the Hub except predetermined shapes and your current level.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "id": "hub_nuke",
     "doesNotAffectSavegame": true,
     "settings": {

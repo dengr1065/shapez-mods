@@ -4,7 +4,7 @@ import type { Zeitgeist } from "../zeitgeist";
 
 const ZEITGEIST_ID = "dengr1065:zeitgeist";
 
-function getZeitgeist(): Zeitgeist | null {
+function getZeitgeist(): Zeitgeist | undefined {
     return MODS.mods.find(
         (mod) => mod.metadata.id === ZEITGEIST_ID
     ) as Zeitgeist;
@@ -24,7 +24,7 @@ export function getLevelKeys(root: GameRoot, amount: number): string[] {
         return [];
     }
 
-    if (amount == 1 || zeitgeist === null) {
+    if (amount == 1 || zeitgeist === undefined) {
         const definition = root.hubGoals.currentGoal.definition;
         return [definition.getHash()];
     }

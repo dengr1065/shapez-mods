@@ -2,7 +2,7 @@
     "entry": "./index.ts",
     "name": "Breakpoint",
     "description": "A wires layer building that pauses the game, based on Pause and Step.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "id": "breakpoint",
     "extra": {
         "requires": {

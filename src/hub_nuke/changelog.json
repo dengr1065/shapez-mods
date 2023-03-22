@@ -1,3 +1,4 @@
 {
+    "1.0.1": ["Fixed silent errors when Zeitgeist is not installed"],
     "1.0.0": ["Initial release"]
 }
