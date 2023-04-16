@@ -1,0 +1,7 @@
+{
+    "1.1.0": [
+        "Fixed multiple building placement bugs in Map Overview",
+        "Added belt planner preview to Map Overview"
+    ],
+    "1.0.0": ["Initial release"]
+}

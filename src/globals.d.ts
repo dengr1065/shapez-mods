@@ -1,5 +1,4 @@
 import { Mod } from "mods/mod";
-import { ModMetadata } from "mods/modloader";
 
 declare global {
     const shapez = {};
@@ -13,6 +12,23 @@ declare global {
         dispatch(...args: T): string | void;
 
         removeAll();
+    }
+
+    declare interface ModMetadata {
+        // Upstream ModMetadata is defined incorrectly
+        name: string;
+        version: string;
+        author: string;
+        website: string;
+        description: string;
+        id: string;
+        minimumGameVersion?: string;
+        settings: object;
+        doesNotAffectSavegame?: boolean;
+    }
+
+    declare interface Math {
+        degrees(rad: number): number;
     }
 
     declare module "*.less" {
@@ -54,5 +70,25 @@ declare global {
 declare module "core/config" {
     export namespace globalConfig {
         export const tileSize: 32;
+        export const mapChunkSize: 16;
+    }
+}
+
+declare module "game/key_action_mapper" {
+    export namespace KEYMAPPINGS {
+        export namespace placementModifiers {
+            export const placeMultiple = {
+                keyCode: number
+            };
+            export const placementDisableAutoOrientation = {
+                keyCode: number
+            };
+            export const placeInverse = {
+                keyCode: number
+            };
+            export const lockBeltDirection = {
+                keyCode: number
+            };
+        }
     }
 }

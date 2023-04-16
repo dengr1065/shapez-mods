@@ -1,5 +1,4 @@
 import { Mod } from "mods/mod";
-import { ModMetadata } from "mods/modloader";
 
 declare global {
     const ModExtras: ModExtrasAPI;
@@ -16,11 +15,17 @@ declare global {
 declare interface ModExtrasAPI {
     version: string;
     require(id: string, version: string = "*", optional: boolean = false): Mod;
-    assertIsOfType(value: any, type: any): boolean;
-    isInteger(value: any): value is number;
+    assertIsOfType<U, T>(value: U, type: T): U is T;
+    isInteger(value: unknown): value is number;
     isIntegerInRange(
-        value: any,
+        value: unknown,
         min: number = -Infinity,
         max: number = Infinity
     ): value is number;
+}
+
+declare interface ModExtrasToggleButton {
+    element: HTMLButtonElement;
+    value: boolean;
+    handler: () => void;
 }
