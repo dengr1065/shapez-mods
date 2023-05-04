@@ -1,10 +1,9 @@
 import { Mod } from "mods/mod";
 
 export class SettingsManager {
-    private mod: Mod;
-
     beltPlannerAlwaysOn: boolean;
     keepBuildingInMapOverview: boolean;
+    cycleBuildingsFix: boolean;
 
     constructor(mod: Mod) {
         // Apply defaults if missing
@@ -17,12 +16,14 @@ export class SettingsManager {
 
         this.beltPlannerAlwaysOn = mod.settings.beltPlannerAlwaysOn;
         this.keepBuildingInMapOverview = mod.settings.keepBuildingInMapOverview;
+        this.cycleBuildingsFix = mod.settings.cycleBuildingsFix;
     }
 
     static getDefaults() {
         return {
             beltPlannerAlwaysOn: false,
-            keepBuildingInMapOverview: true
+            keepBuildingInMapOverview: true,
+            cycleBuildingsFix: true
         };
     }
 }

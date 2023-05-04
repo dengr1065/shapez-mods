@@ -14,3 +14,9 @@ be uncomfortable for some people, this tweak is turned off by default.
 By default when you zoom out far enough, you will enter Map Overview mode and
 the currently selected building will be discarded. This tweak allows you to keep
 the selected building even after entering and returning from the Map Overview.
+
+## Cycle buildings in active toolbar
+
+If this is enabled, behavior of Cycle Buildings key (Tab by default) will be
+changed to find the next building in active toolbar instead of returning to the
+primary one.

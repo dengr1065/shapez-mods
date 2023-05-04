@@ -120,7 +120,7 @@ export function onMouseMovePatch(
     [pos]: [Vector]
 ) {
     if (!this.buildingTweaks.settingsManager.keepBuildingInMapOverview) {
-        return srcMethod.call(this);
+        return srcMethod.call(this, pos);
     }
 
     // NOTE: Code mostly copy-pasted from vanilla follows

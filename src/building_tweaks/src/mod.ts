@@ -9,8 +9,10 @@ import {
     postInitialize,
     tryPlaceCurrentBuildingAtPatch,
     updatePatch
-} from "./patches";
+} from "./building_placer_patches";
 import { SettingsManager } from "./settings";
+import { HUDBaseToolbar } from "game/hud/parts/base_toolbar";
+import { cycleBuildingsPatch } from "./toolbar_patches";
 
 export class BuildingTweaks extends Mod {
     settingsManager = new SettingsManager(this);
@@ -56,5 +58,12 @@ export class BuildingTweaks extends Mod {
         );
 
         this.modInterface.replaceMethod(HUDBuildingPlacer, "draw", drawPatch);
+
+        // Cycle buildings in the current toolbar
+        this.modInterface.replaceMethod(
+            HUDBaseToolbar,
+            "cycleBuildings",
+            cycleBuildingsPatch
+        );
     }
 }

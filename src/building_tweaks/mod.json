@@ -2,7 +2,7 @@
     "entry": "./src/index.ts",
     "name": "Building Tweaks",
     "description": "Various changes to provide efficient and personalized building experience.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "id": "building_tweaks",
     "doesNotAffectSavegame": true,
     "extra": {}

@@ -1,4 +1,5 @@
 {
+    "1.2.0": ["New tweak for cycling buildings in both toolbars"],
     "1.1.0": [
         "Fixed multiple building placement bugs in Map Overview",
         "Added belt planner preview to Map Overview"
