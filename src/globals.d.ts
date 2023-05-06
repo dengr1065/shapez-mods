@@ -74,21 +74,25 @@ declare module "core/config" {
     }
 }
 
+declare module "core/singleton_factory" {
+    export interface SingletonFactory {
+        findByClass<T extends new (...args: unknown) => object>(
+            handle: T
+        ): InstanceType<T>;
+    }
+}
+
 declare module "game/key_action_mapper" {
+    type Keybinding = { keyCode: number };
     export namespace KEYMAPPINGS {
+        export namespace placement {
+            export const rotateInverseModifier: Keybinding;
+        }
         export namespace placementModifiers {
-            export const placeMultiple = {
-                keyCode: number
-            };
-            export const placementDisableAutoOrientation = {
-                keyCode: number
-            };
-            export const placeInverse = {
-                keyCode: number
-            };
-            export const lockBeltDirection = {
-                keyCode: number
-            };
+            export const placeMultiple: Keybinding;
+            export const placementDisableAutoOrientation: Keybinding;
+            export const placeInverse: Keybinding;
+            export const lockBeltDirection: Keybinding;
         }
     }
 }
