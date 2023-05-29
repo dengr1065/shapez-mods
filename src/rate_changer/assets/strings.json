@@ -1,0 +1,7 @@
+{
+    "hotkeys": {
+        "toggleCustomTickRate": "Toggle Custom Tick Rate",
+        "increaseTickRate": "Increase Tick Rate",
+        "decreaseTickRate": "Decrease Tick Rate"
+    }
+}

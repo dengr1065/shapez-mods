@@ -1,0 +1,74 @@
+#ingame_HUD_RateChanger {
+    position: absolute;
+    bottom: 0.8rem;
+    right: 0.6rem;
+    z-index: 170;
+
+    display: flex;
+    gap: 0.5em;
+    font-size: 80%;
+    color: #ffffff;
+    --background-alpha: 90%;
+    --transition-duration: 0.15s;
+
+    > div {
+        display: flex;
+        flex-direction: column-reverse;
+        overflow: hidden;
+        padding-block: 0.3em;
+        border-radius: 0.3em;
+        background-color: rgba(51 52 59 / var(--background-alpha));
+        transition: var(--transition-duration) background-color ease-in;
+    }
+
+    &.custom > div {
+        background-color: rgb(140 75 15 / var(--background-alpha));
+    }
+
+    .tickRateOption {
+        width: 2.5em;
+        padding-bottom: 0.1em;
+        text-align: center;
+        line-height: 1.8em;
+        pointer-events: all;
+        --rc-gradient-alpha: 0%;
+        transition: var(--transition-duration) --rc-gradient-alpha ease-in,
+            var(--transition-duration) background-color ease-in,
+            var(--transition-duration) color ease-in;
+        background-image: linear-gradient(
+            to bottom,
+            rgb(255 255 255 / calc(var(--rc-gradient-alpha) / 3)),
+            transparent,
+            rgb(0 0 0 / var(--rc-gradient-alpha))
+        );
+
+        &.active {
+            --rc-gradient-alpha: 30%;
+            background-color: rgb(220 125 30);
+            color: white;
+        }
+    }
+
+    &:not(.custom) .tickRateOption.active {
+        background-color: rgb(50 75 180);
+    }
+
+    html[data-theme="light"] & {
+        --background-alpha: 15%;
+        color: #222222;
+
+        &.custom {
+            --background-alpha: 25%;
+        }
+    }
+}
+
+@property --rc-gradient-alpha {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 0%;
+}
+
+#ingame_HUD_Notifications {
+    right: 3em;
+}
