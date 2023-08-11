@@ -108,11 +108,6 @@ export function drawBlueprint(
                 staticComp.rotation
             ).toWorldSpace();
 
-            parameters.context.fillText(
-                `${worldTile} ${size}`,
-                worldTile.x,
-                worldTile.y
-            );
             parameters.context.fillRect(
                 worldTile.x,
                 worldTile.y,
