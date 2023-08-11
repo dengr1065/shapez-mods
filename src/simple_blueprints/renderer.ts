@@ -28,6 +28,31 @@ function drawMatrix(
     }
 }
 
+function rotateSize(size: Vector, rotation: number) {
+    switch (rotation) {
+        case 0:
+        case 180:
+            return size;
+        case 90:
+        case 270:
+            return new Vector(size.y, size.x);
+    }
+
+    throw new Error(`Invalid rotation requested: ${rotation}`);
+}
+
+function applyAdjust(pos: Vector, size: Vector, rotation: number) {
+    switch (rotation) {
+        case 0:
+        case 90:
+            return pos;
+        case 180:
+            return pos.subScalars(size.x - 1, 0);
+        case 270:
+            return pos.subScalars(0, size.y - 1);
+    }
+}
+
 export function drawBlueprint(
     parameters: DrawParameters,
     blueprint: Blueprint,
@@ -73,16 +98,26 @@ export function drawBlueprint(
         if (matrix) {
             drawMatrix(parameters, matrix, newPos);
         } else {
-            const worldTile = newPos.toWorldSpace();
-            const size = staticComp
-                .getTileSize()
-                .rotateFastMultipleOf90(staticComp.rotation);
+            const size = rotateSize(
+                staticComp.getTileSize(),
+                staticComp.rotation
+            );
+            const worldTile = applyAdjust(
+                newPos,
+                size,
+                staticComp.rotation
+            ).toWorldSpace();
 
+            parameters.context.fillText(
+                `${worldTile} ${size}`,
+                worldTile.x,
+                worldTile.y
+            );
             parameters.context.fillRect(
                 worldTile.x,
                 worldTile.y,
-                globalConfig.tileSize * size.x,
-                globalConfig.tileSize * size.y
+                Math.abs(globalConfig.tileSize * size.x),
+                Math.abs(globalConfig.tileSize * size.y)
             );
         }
     }

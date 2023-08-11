@@ -2,7 +2,7 @@
     "entry": "./mod.ts",
     "name": "Simple Blueprints",
     "description": "Makes blueprints use simplified/matrix building representations while Map Overview is active.",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "id": "simple_blueprints",
     "doesNotAffectSavegame": true,
     "settings": {
@@ -10,6 +10,7 @@
     },
     "extra": {
         "changelog": {
+            "0.3.0": ["Fixed rendering of buildings larger than 1x1"],
             "0.2.0": ["Silhouette color is now used by default"]
         }
     }
