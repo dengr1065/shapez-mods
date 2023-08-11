@@ -2,7 +2,7 @@
     "entry": "./index.ts",
     "name": "Rate Changer",
     "description": "Change your tick rate without reloading your savegame.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "id": "rate_changer",
     "doesNotAffectSavegame": true
 }

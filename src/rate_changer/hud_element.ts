@@ -53,6 +53,23 @@ export class HUDRateChanger extends BaseHUDPart {
         return true;
     }
 
+    get customRate(): number | null {
+        if (this.lastNonDefaultRate < 0) {
+            return null;
+        }
+
+        return this.lastNonDefaultRate;
+    }
+
+    set customRate(value: number | null) {
+        if (value === null || value < 0) {
+            this.lastNonDefaultRate = -1;
+            return;
+        }
+
+        this.lastNonDefaultRate = value;
+    }
+
     private setTickRate(target: number) {
         const isCustom = target !== this.defaultRate;
         this.root.dynamicTickrate.setTickRate(target);
