@@ -1,4 +1,8 @@
 {
+    "1.8.0": [
+        "The state of toggles like Free Blueprints is now persisted",
+        "Minor style changes"
+    ],
     "1.7.0": [
         "Ability to set level to exact value",
         "Underlying API improvements",

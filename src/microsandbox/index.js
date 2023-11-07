@@ -78,6 +78,10 @@ class MicroSandbox extends Mod {
         this.signals.appBooted.add(() => setupIntegrations(this));
         this.signals.gameInitialized.add(this.registerHud, this);
 
+        // Support for saving toggleable settings
+        this.signals.gameSerialized.add(this.saveState, this);
+        this.signals.gameDeserialized.add(this.loadState, this);
+
         // Expose built-in rows
         this.rows = rowClasses;
     }
@@ -90,6 +94,38 @@ class MicroSandbox extends Mod {
         this.signals.hudElementInitialized.dispatch(part);
         part.initialize();
         this.signals.hudElementFinalized.dispatch(part);
+    }
+
+    saveState(
+        /** @type {import("game/root").GameRoot} */ root,
+        /** @type {import("savegame/savegame_typedefs").SerializedGame} */ dump
+    ) {
+        const state = (dump.modExtraData[this.metadata.id] ??= {});
+
+        const hud = root.hud.parts.microSandbox;
+        if (hud === undefined) {
+            return;
+        }
+
+        for (const key of hud.stateProperties) {
+            state[key] = hud[key];
+        }
+    }
+
+    loadState(
+        /** @type {import("game/root").GameRoot} */ root,
+        /** @type {import("savegame/savegame_typedefs").SerializedGame} */ dump
+    ) {
+        const state = dump.modExtraData[this.metadata.id] ?? {};
+
+        const hud = root.hud.parts.microSandbox;
+        if (hud === undefined) {
+            return;
+        }
+
+        for (const key of hud.stateProperties) {
+            hud[key] = state[key];
+        }
     }
 }
 

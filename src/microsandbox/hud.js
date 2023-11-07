@@ -17,6 +17,18 @@ const upgradeShortNames = {
 };
 
 export class HUDMicroSandbox extends BaseHUDPart {
+    freeBlueprints = false;
+    unlockRewards = false;
+    freePackaging = false;
+    infiniteStorages = false;
+
+    stateProperties = [
+        "freeBlueprints",
+        "unlockRewards",
+        "freePackaging",
+        "infiniteStorages"
+    ];
+
     rowColors = [
         "#474880",
         "#9c3d36",
@@ -53,8 +65,6 @@ export class HUDMicroSandbox extends BaseHUDPart {
     initialize() {
         this.visible = false;
         this.domAttach = new DynamicDomAttach(this.root, this.element);
-        this.freeBlueprints = false;
-        this.unlockRewards = false;
 
         for (const integration of Object.values(integrations)) {
             if (integration.enabled && integration.createRows) {
