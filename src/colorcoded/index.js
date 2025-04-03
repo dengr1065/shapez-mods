@@ -1,27 +1,27 @@
-import { Mod } from "mods/mod";
-import { StaticMapEntitySystem } from "game/systems/static_map_entity";
-import { BeltSystem } from "game/systems/belt";
-import { BeltUnderlaysSystem } from "game/systems/belt_underlays";
-import { ColorCodedComponent } from "./component";
-import { COLOR_ITEM_SINGLETONS } from "game/items/color_item";
 import { gMetaBuildingRegistry } from "core/global_registries";
-import { HUDColorSelector, SIGNAL_NAME } from "./hud";
-import { resources } from "./themes";
-import { THEMES } from "game/theme";
-import { COLOR_FILTERS, getColorFilter } from "./filters";
 import { Signal } from "core/signal";
 import { GameCore } from "game/core";
+import { COLOR_ITEM_SINGLETONS } from "game/items/color_item";
+import { BeltSystem } from "game/systems/belt";
+import { BeltUnderlaysSystem } from "game/systems/belt_underlays";
+import { StaticMapEntitySystem } from "game/systems/static_map_entity";
+import { THEMES } from "game/theme";
+import { Mod } from "mods/mod";
+import { ColorCodedComponent } from "./component";
+import { COLOR_FILTERS, getColorFilter } from "./filters";
+import { HUDColorSelector, SIGNAL_NAME } from "./hud";
+import { resources } from "./themes";
 
-import * as systemPatches from "./system_patches";
 import * as beltPatches from "./belts/belt_patches";
 import * as beltUnderlaysPatches from "./belts/belt_underlays_patches";
+import * as systemPatches from "./system_patches";
 
 import { MainMenuState } from "states/main_menu";
 
 import css from "./hud.css";
-import info from "./mod.json";
 import icon from "./metadata/icon.webp";
 import screenshot0 from "./metadata/screenshot0.png";
+import info from "./mod.json";
 
 import { DISCLAIMER } from "./cringe";
 
@@ -63,6 +63,10 @@ class ColorCoded extends Mod {
 
         // register hud to set color codes
         this.signals.gameInitialized.add(this.registerHud, this);
+
+        // move color-coding entity data to modExtraData
+        this.signals.gameDeserialized.add(this.loadSavegameData, this);
+        this.signals.gameSerialized.add(this.saveSavegameData, this);
 
         this.modInterface.registerCss(css);
     }
@@ -130,6 +134,66 @@ class ColorCoded extends Mod {
 
         // also register signal dispatched by the hud
         this.signals[SIGNAL_NAME] = new Signal();
+    }
+
+    /**
+     * @param {import("game/root").GameRoot} root
+     */
+    loadSavegameData(root, data) {
+        console.log(data);
+        if (!(this.metadata.id in data.modExtraData)) {
+            return;
+        }
+
+        const componentId = ColorCodedComponent.getId();
+
+        /** @type {ColorCodedExtraData} */
+        const store = data.modExtraData[this.metadata.id];
+        store.colorToUid ??= {};
+
+        const uidMap = root.entityMgr.getFrozenUidSearchMap();
+        root.logic.performBulkOperation(() => {
+            for (const color in store.colorToUid) {
+                if (!ColorCodedComponent.isValidColor(color)) {
+                    continue;
+                }
+
+                const uids = store.colorToUid[color];
+                const entities = uids.map((uid) => uidMap.get(uid));
+                for (const entity of entities) {
+                    /** @type {ColorCodedComponent} */
+                    const comp = entity.components[componentId];
+                    if (!comp) {
+                        continue;
+                    }
+
+                    comp.color = color;
+                }
+            }
+        });
+    }
+
+    saveSavegameData(_root, data) {
+        const componentId = ColorCodedComponent.getId();
+
+        /** @type {ColorCodedExtraData} */
+        const store = { colorToUid: {} };
+        data.modExtraData[this.metadata.id] = store;
+
+        for (const entity of data.entities) {
+            const component = entity.components[componentId];
+            if (!component) {
+                continue;
+            }
+
+            const color = component.color;
+            if (!ColorCodedComponent.isDefaultColor(color)) {
+                store.colorToUid[color] ??= [];
+                store.colorToUid[color].push(entity.uid);
+            }
+
+            delete entity.components[componentId];
+        }
     }
 }
 

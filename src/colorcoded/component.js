@@ -1,15 +1,15 @@
 import {
+    AtlasSprite,
+    ORIGINAL_SPRITE_SCALE,
+    SpriteAtlasLink
+} from "core/sprites";
+import {
     enumColors,
     enumColorToShortcode,
     enumShortcodeToColor
 } from "game/colors";
 import { Component } from "game/component";
 import { types } from "savegame/serialization";
-import {
-    AtlasSprite,
-    ORIGINAL_SPRITE_SCALE,
-    SpriteAtlasLink
-} from "core/sprites";
 import { COLOR_FILTERS } from "./filters";
 
 export class ColorCodedComponent extends Component {
@@ -23,9 +23,22 @@ export class ColorCodedComponent extends Component {
         };
     }
 
+    static isDefaultColor(color) {
+        // uncolored means the building is not color-coded
+        return color === enumColorToShortcode[enumColors.uncolored];
+    }
+
+    static isValidColor(color) {
+        return !!enumShortcodeToColor[color];
+    }
+
     constructor({ color = "u" }) {
         super();
-        window.assert(!!enumShortcodeToColor[color], "Invalid color: ", color);
+        window.assert(
+            ColorCodedComponent.isValidColor(color),
+            "Invalid color: ",
+            color
+        );
 
         this.color = color;
     }
@@ -35,8 +48,7 @@ export class ColorCodedComponent extends Component {
     }
 
     hasColorFilter() {
-        // uncolored means the building is not color-coded
-        return this.color != enumColorToShortcode[enumColors.uncolored];
+        return !ColorCodedComponent.isDefaultColor(this.color);
     }
 
     getColorFilter() {
