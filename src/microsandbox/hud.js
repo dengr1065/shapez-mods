@@ -2,7 +2,7 @@ import { Signal } from "core/signal";
 import { makeDiv } from "core/utils";
 import { BaseHUDPart } from "game/hud/base_hud_part";
 import { DynamicDomAttach } from "game/hud/dynamic_dom_attach";
-import { HUDSandboxController } from "game/hud/parts/sandbox_controller";
+import { enumNotificationType } from "game/hud/parts/notifications";
 import { generateLevelDefinitions } from "game/modes/regular";
 import { T } from "translations";
 import { integrations } from "./api";
@@ -108,17 +108,9 @@ export class HUDMicroSandbox extends BaseHUDPart {
             return [];
         }
 
-        // Handling upgrade setting would require too much
-        // copy-paste, so just delegate it to the vanilla function
-        // while it exists
-        const modifyUpgrade = HUDSandboxController?.prototype?.modifyUpgrade;
-        if (!modifyUpgrade) {
-            return;
-        }
-
         for (const id in this.root.hubGoals.upgradeLevels) {
             const setter = (value) =>
-                modifyUpgrade.call(this, id, value - this.upgrades[id] - 1);
+                this.modifyUpgrade(id, value - this.upgrades[id] - 1);
 
             const row = new NumberRow(this, {
                 label: upgradeShortNames[id] ?? T.shopUpgrades[id].name ?? id,
@@ -136,6 +128,38 @@ export class HUDMicroSandbox extends BaseHUDPart {
 
     get upgrades() {
         return this.root.hubGoals.upgradeLevels;
+    }
+
+    /**
+     * Direct copy-paste of vanilla method
+     */
+    modifyUpgrade(id, amount) {
+        const upgradeTiers = this.root.gameMode.getUpgrades()[id];
+        const maxLevel = upgradeTiers.length;
+
+        this.root.hubGoals.upgradeLevels[id] = Math.max(
+            0,
+            Math.min(
+                maxLevel,
+                (this.root.hubGoals.upgradeLevels[id] ?? 0) + amount
+            )
+        );
+
+        // Compute improvement
+        let improvement = 1;
+        for (let i = 0; i < this.root.hubGoals.upgradeLevels[id]; ++i) {
+            improvement += upgradeTiers[i].improvement;
+        }
+
+        this.root.hubGoals.upgradeImprovements[id] = improvement;
+        this.root.signals.upgradePurchased.dispatch(id);
+        this.root.hud.signals.notification.dispatch(
+            "Upgrade '" +
+                id +
+                "' is now at tier " +
+                (this.root.hubGoals.upgradeLevels[id] + 1),
+            enumNotificationType.upgrade
+        );
     }
 
     setLevel(value) {
