@@ -1,4 +1,5 @@
 {
+    "1.8.1": ["Minor visual appearance fixes"],
     "1.8.0": [
         "The state of toggles like Free Blueprints is now persisted",
         "Minor style changes"

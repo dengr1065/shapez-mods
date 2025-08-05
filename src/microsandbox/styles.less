@@ -1,18 +1,18 @@
 #ingame_HUD_MicroSandbox {
     position: absolute;
-    padding: 0.5rem;
+    padding: 0.5em;
     bottom: $padding * 2;
     left: $padding * 2;
     min-width: 16em;
 
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.1em;
     z-index: 200;
 
     background-color: #31343cf2;
     color: #ffffffe0;
-    font-size: 16px;
+    font-size: calc(12px * var(--ui-scale));
     border-radius: 0.5em;
 
     .row {
