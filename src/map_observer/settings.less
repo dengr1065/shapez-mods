@@ -21,10 +21,9 @@
         grid-template-columns: 1fr auto;
         align-items: center;
         width: 30em;
-        height: 2em;
 
         border-radius: 0.3em;
-        padding: 0 0.4em;
+        padding: 0.2em 0.4em;
         transition: 0.15s background-color linear;
 
         &:hover {
@@ -49,10 +48,10 @@
             border-radius: 0.2em;
             width: 3em;
             height: 1.5em;
+        }
 
-            &:hover {
-                outline: 0.05em solid #ffffff40;
-            }
+        &:hover::-webkit-color-swatch {
+            outline: 0.05em solid #ffffff40;
         }
 
         &[type="checkbox"] {
@@ -77,6 +76,24 @@
                 bottom: 0;
                 right: 0;
             }
+        }
+    }
+
+    input[type="range"] {
+        width: 5em;
+        height: 1.5em;
+
+        &::-webkit-slider-runnable-track {
+            background: #00000020;
+            border-radius: 0.25em;
+        }
+
+        &::-webkit-slider-thumb {
+            appearance: none;
+            width: 0.5em;
+            height: 0.5em;
+            background: #4a97df;
+            border-radius: 50%;
         }
     }
 }

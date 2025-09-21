@@ -2,7 +2,7 @@
     "entry": "./mod.js",
     "name": "Map Observer",
     "description": "Customize map background colors, and extend the limit of zooming out.",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "id": "map_observer",
     "minimumGameVersion": ">=1.5.5",
     "doesNotAffectSavegame": true,

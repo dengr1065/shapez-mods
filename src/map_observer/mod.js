@@ -4,12 +4,12 @@ import { keyToKeyCode } from "game/key_action_mapper";
 import { THEMES } from "game/theme";
 import { Mod } from "mods/mod";
 import { StorageImplElectron } from "platform/electron/storage";
+import icon from "./icon.webp";
 import info from "./mod.json";
+import readme from "./README.md";
 import { MapObserverSettingsState } from "./settings";
 import settingsCSS from "./settings.less";
 import { internalUpdateZooming } from "./smooth_zoom";
-import icon from "./icon.webp";
-import readme from "./README.md";
 
 const defaultSettings = {
     minZoom: 0.6,
@@ -107,7 +107,7 @@ class MapObserver extends Mod {
         for (const theme in THEMES) {
             vanillaThemeMapColors[theme] = {
                 background: THEMES[theme].map.background,
-                grid: THEMES[theme].map.grid,
+                gridRegular: THEMES[theme].map.gridRegular,
                 emptyChunk: THEMES[theme].map.chunkOverview.empty,
                 filledChunk: THEMES[theme].map.chunkOverview.filled
             };
@@ -144,7 +144,7 @@ class MapObserver extends Mod {
             // Set our customized colors
             for (const theme in THEMES) {
                 THEMES[theme].map.background = this.settings.gridBackground;
-                THEMES[theme].map.grid = this.settings.gridForeground;
+                THEMES[theme].map.gridRegular = this.settings.gridForeground;
                 THEMES[theme].map.chunkOverview.empty =
                     this.settings.overviewChunkBg;
                 THEMES[theme].map.chunkOverview.filled =
@@ -155,7 +155,7 @@ class MapObserver extends Mod {
             for (const theme in THEMES) {
                 const vanilla = vanillaThemeMapColors[theme];
                 THEMES[theme].map.background = vanilla.background;
-                THEMES[theme].map.grid = vanilla.grid;
+                THEMES[theme].map.gridRegular = vanilla.gridRegular;
                 THEMES[theme].map.chunkOverview.empty = vanilla.emptyChunk;
                 THEMES[theme].map.chunkOverview.filled = vanilla.filledChunk;
             }

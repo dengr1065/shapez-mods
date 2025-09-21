@@ -26,6 +26,15 @@ function makeColorInput(color) {
     return input;
 }
 
+function makeRangeInput(value, max) {
+    const input = document.createElement("input");
+    input.type = "range";
+    input.max = String(max ?? 100);
+    input.value = String(value ?? 0);
+
+    return input;
+}
+
 export class MapObserverSettingsState extends TextualGameState {
     constructor() {
         super("MapObserverSettingsState");
@@ -39,10 +48,16 @@ export class MapObserverSettingsState extends TextualGameState {
     onEnter() {
         const settings = this.mod.settings;
 
+        const { color: gridColor, opacity: gridOpacity } = this.splitHexOpacity(
+            settings.gridForeground
+        );
+
         const useHotkeys = makeCheckboxInput(settings.useHotkeys);
         const smoothZoom = makeCheckboxInput(settings.smoothZoom);
         const customizeGrid = makeCheckboxInput(settings.customizeGrid);
         const backgroundInput = makeColorInput(settings.gridBackground);
+        const foregroundInput = makeColorInput(gridColor);
+        const opacityInput = makeRangeInput(gridOpacity, 255);
         const overviewChunkBg = makeColorInput(settings.overviewChunkBg);
         const overviewActiveChunkBg = makeColorInput(
             settings.overviewActiveChunkBg
@@ -63,6 +78,15 @@ export class MapObserverSettingsState extends TextualGameState {
         backgroundInput.addEventListener("change", () => {
             settings.gridBackground = backgroundInput.value;
         });
+
+        const gridForegroundHandler = this.updateGridForeground.bind(
+            this,
+            foregroundInput,
+            opacityInput
+        );
+
+        foregroundInput.addEventListener("change", gridForegroundHandler);
+        opacityInput.addEventListener("change", gridForegroundHandler);
 
         overviewChunkBg.addEventListener("change", () => {
             settings.overviewChunkBg = overviewChunkBg.value;
@@ -87,10 +111,35 @@ export class MapObserverSettingsState extends TextualGameState {
         content.appendChild(labelWrap("Alternative Smooth Zoom", smoothZoom));
         content.appendChild(labelWrap("Customize Colors", customizeGrid));
         content.appendChild(labelWrap("Regular Background", backgroundInput));
+        content.appendChild(labelWrap("Grid Lines Color", foregroundInput));
+        content.appendChild(labelWrap("Grid Lines Opacity", opacityInput));
         content.appendChild(labelWrap("Overview Background", overviewChunkBg));
         content.appendChild(
             labelWrap("Overview Background (Active)", overviewActiveChunkBg)
         );
+    }
+
+    updateGridForeground(colorInput, opacityInput) {
+        const color = colorInput.value;
+        const opacity = Number(opacityInput.value);
+
+        this.mod.settings.gridForeground = this.combineHexOpacity(
+            color,
+            opacity
+        );
+    }
+
+    combineHexOpacity(color, opacity) {
+        return `${color}${opacity.toString(16)}`;
+    }
+
+    splitHexOpacity(hex) {
+        if (hex.length === 7) {
+            return { color: hex, opacity: 255 };
+        }
+
+        const opacity = Number("0x" + hex.slice(7));
+        return { color: hex.slice(0, 7), opacity };
     }
 
     getStateHeaderTitle() {
