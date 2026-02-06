@@ -1,25 +1,23 @@
-import { integrations } from "../api";
+import { makeButton } from "core/utils";
 import { Row } from "./row";
 
 export class ToggleRow extends Row {
     create() {
         this.element.classList.add("toggle");
-        this.button = integrations.modExtras.api.makeToggleButton(
-            this.element,
-            this.label,
-            this.getter()
-        );
 
-        this.hud.trackClicks(this.button.element, () => {
-            // Note: at this point, internal value is the same,
-            // so we invert it
-            this.setter(!this.button.value);
+        this.button = makeButton(this.element);
+        this.update(this.getter());
+
+        this.hud.trackClicks(this.button, () => {
+            const newValue = !this.getter();
+
+            this.setter(newValue);
+            this.update(newValue);
         });
     }
 
     update(value) {
-        // Small hack to make button represent the actual value
-        this.button.value = !value;
-        this.button.handler();
+        this.button.innerText = this.label + (value ? ": ON" : ": OFF");
+        this.button.classList.toggle("active", value);
     }
 }

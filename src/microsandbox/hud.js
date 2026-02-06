@@ -8,6 +8,7 @@ import { T } from "translations";
 import { integrations } from "./api";
 import { LabelRow } from "./rows/label_row";
 import { NumberRow } from "./rows/number_row";
+import { ToggleRow } from "./rows/toggle_row";
 
 const upgradeShortNames = {
     belt: "Transport",
@@ -58,7 +59,17 @@ export class HUDMicroSandbox extends BaseHUDPart {
                 min: 1,
                 valueEditing: true
             }),
-            ...this.createUpgradeRows()
+            ...this.createUpgradeRows(),
+            new ToggleRow(this, {
+                label: "Free Blueprints",
+                getter: () => this.freeBlueprints,
+                setter: (value) => (this.freeBlueprints = value)
+            }),
+            new ToggleRow(this, {
+                label: "Unlock Rewards",
+                getter: () => this.unlockRewards,
+                setter: (value) => (this.unlockRewards = value)
+            })
         ];
     }
 
